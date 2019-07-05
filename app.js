@@ -51,12 +51,13 @@ var usrSchema = new mongoose.Schema({
 //  Routes
 // =====================
 
-// GET Login
+// GET Login ---- HomePage
+
 app.get("/", function(req, res){
     res.render("index");
 })
 
-// POST Login
+// POST Login ---- HomePage
 
 app.post("/", passport.authenticate("local", {
     successRedirect: "/usrHome",
@@ -66,11 +67,13 @@ app.post("/", passport.authenticate("local", {
 });
 
 // GET Register page
+
 app.get("/register", function(req, res){
     res.render("register")
 });
 
 // POST Register page
+
 app.post("/register", function(req, res){
     User.register(new User({username: req.body.username}), req.body.password, function(err, user){
         if(err){
@@ -108,6 +111,11 @@ app.get("/comments", isLoggedIn, function(req, res){
 // POST comments
 app.post("/comments", isLoggedIn, function(req, res){
     
+})
+
+// GET Database
+app.get("/database", isLoggedIn, function(req, res){
+    res.render("dataBase")
 })
 
 

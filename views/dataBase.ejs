@@ -1,6 +1,5 @@
 <% include ./partials/headerLoggin %>
 
-<!-- Side bar  -->
 <div class="container-fluid">
     <div class="row">
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
@@ -24,31 +23,10 @@
                 </ul>
             </div>
         </nav>
-
-        <!-- End of side bar -->
         <!-- Content goes under -->
-        <div class="main-panel col-md-10">
-            <% comments.forEach(function(comment){ %>
-            <div class="card card-stats card-warning" style="margin: 20px 20px;">
-                <div class="card-body">
-                    <h6 class="card-title">
-                        <%= comment.title %>
-                    </h6>
-                    <h5 class="card-category">
-                        <%= comment.url %>
-                    </h5>
-                    <img src="<%= comment.image %>">
-                    <h6>
-                        <%= comment.content %>
-                    </h6>
-                </div>
-            </div>
-            <% }); %>
-        </div>
+        <div class="main-panel col-md-10"></div>
     </div>
-    <!-- End of Content -->
 </div>
-
 
 
 <% include ./partials/footer %>
