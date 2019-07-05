@@ -1,0 +1,25 @@
+<% include ./partials/header %>
+
+<div class="container-fluid" style="margin-top: 100px;">
+    <div class="row">
+        <div class="col-9">
+            <img src="http://rismedia.com/wp-content/uploads/2017/12/proactive_thinker_665x350_519190164.jpg" style="margin-left: 20%;">
+        </div>
+        <div class="col-2">
+            <form action="/" method="POST">
+                <div class="form-group">
+                    <label for="inputUsername"> Username </label>
+                    <input type="text" class="form-control" id="inputUsername" name="username" placeholder="Username">
+                </div>    
+                <div class="form-group">
+                    <label for="inputPassword"> Password </label>
+                    <input type="password" class="form-control" name="password" id="inputPassword">
+                </div>
+                <button type="submit" class="btn btn-primary btn-md"> Login </button>
+            </form>
+        </div>
+        <div class="col-1"></div>
+    </div>
+</div>
+
+<% include ./partials/footer %>

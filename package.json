@@ -1,0 +1,19 @@
+{
+  "name": "startupproj_1",
+  "version": "1.0.0",
+  "description": "Startup Project of having solution to all assignment I have ever taken, probably resume and etc..",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JeTurkey/startupProj_1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JeTurkey/startupProj_1/issues"
+  },
+  "homepage": "https://github.com/JeTurkey/startupProj_1#readme"
+}

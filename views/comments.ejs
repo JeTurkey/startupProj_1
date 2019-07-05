@@ -1,0 +1,23 @@
+<% include ./partials/headerLoggin %>
+
+<h1> This is the comment page </h1>
+
+
+<% comments.forEach(function(comment){ %>
+    <div>
+        <h4>
+            <%= comment.title %>
+        </h4>
+        <h5>
+            <%= comment.url %>
+        </h5>
+        <img src="<%= comment.image %>" >
+        <h6>
+            <%= comment.content %>
+        </h6>
+    </div> 
+
+<% }); %>
+
+
+<% include ./partials/footer %>
