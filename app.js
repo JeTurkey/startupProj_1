@@ -119,6 +119,12 @@ app.get("/database", isLoggedIn, function(req, res){
 })
 
 
+// GET updateLog
+
+app.get("/updateLog", isLoggedIn, function(req, res){
+    res.render("updateLog")
+})
+
 
 // middle ware
 function isLoggedIn(req, res, next){
