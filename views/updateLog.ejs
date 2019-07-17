@@ -13,7 +13,24 @@
                             </ul>
                 </div>
             </nav>
-
+            <div class="col-md-10">
+                <% updateLog.forEach(function(log){ %>
+                    <div class="card card-stats card-warning" style="margin: 20px 20px;">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%= log.version %>
+                            <h5>
+                            <h6 class="card-category">
+                                <%= log.date %>
+                            </h6>
+                            <h6>
+                                <%= log.description %>
+                            </h6>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
 </div>
 
 

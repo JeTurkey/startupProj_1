@@ -10,7 +10,8 @@ var express               = require("express"),
     mongoose              = require("mongoose"),
     passport              = require("passport"),
     LocalStrategy         = require("passport-local"),
-    passportLocalMongoose = require("passport-local-mongoose");
+    passportLocalMongoose = require("passport-local-mongoose"),
+    request               = require("request");
 
 
 
@@ -46,6 +47,17 @@ passport.deserializeUser(User.deserializeUser());
 var usrSchema = new mongoose.Schema({
     usrname: String
 })
+
+
+
+// ====================
+//     Pre-defined
+// ====================
+
+var updateLog=[
+    {version: "beta 0.1", date: "2019-07-07", description: "Making sure all pages are working correctly"}
+]
+
 
 // =====================
 //  Routes
@@ -115,14 +127,24 @@ app.post("/comments", isLoggedIn, function(req, res){
 
 // GET Database
 app.get("/database", isLoggedIn, function(req, res){
-    res.render("dataBase")
+    var query = req.query.search;
+    var url = "http://omdbapi.com/?s=" + query + "&apikey=thewdb";
+    request(url, function(error, response, body){
+    if(!error & response.statusCode == 200) {
+        var parsedData = JSON.parse(body)
+        res.render("dataBase", {data: parsedData})
+    }else{
+        console.log(error)
+    }
+    })
+    // res.render("dataBase")
 })
 
 
 // GET updateLog
 
 app.get("/updateLog", isLoggedIn, function(req, res){
-    res.render("updateLog")
+    res.render("updateLog", {updateLog: updateLog})
 })
 
 
