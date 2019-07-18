@@ -81,9 +81,9 @@ var sciIndex=[]
 var sheIndex=[]
 
 
-// =====================
-//  Routes
-// =====================
+// =========================================================================================================
+//                                              Routes
+// =========================================================================================================
 
 // GET Login ---- HomePage
 
@@ -130,7 +130,6 @@ app.get("/logout", function(req, res){
 app.get("/usrHome", isLoggedIn, function(req, res){
     request("http://hq.sinajs.cn/list=s_sh000001", function(error, response, body){
         if(!error & response.statusCode == 200) {
-            console.log("Success")
             var parsedData = body
             sciIndex.push(parsedData)
         } else {
@@ -140,7 +139,6 @@ app.get("/usrHome", isLoggedIn, function(req, res){
     })
     request("http://hq.sinajs.cn/list=s_sz399001", function(error, response, body){
         if(!error & response.statusCode == 200) {
-            console.log("Success")
             var parsedData = body
             sheIndex.push(parsedData)
         } else {
@@ -148,7 +146,6 @@ app.get("/usrHome", isLoggedIn, function(req, res){
             console.log(error)
         }
     })
-    
     res.render("usrHome", {sciIndex: sciIndex, sheIndex: sheIndex});
 })
 
@@ -189,6 +186,18 @@ app.get("/database", isLoggedIn, function(req, res){
 app.get("/updateLog", isLoggedIn, function(req, res){
     res.render("updateLog", {updateLog: updateLog})
 })
+
+// GET industry page
+
+app.get("/industry", isLoggedIn, function(req, res){
+    res.render("industry")
+})
+
+
+
+// =========================================================================================================
+//                                             End of Routes
+// =========================================================================================================
 
 
 // middle ware
