@@ -6,32 +6,14 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#" style="padding-left: 4%; padding-right: 5%;"> Top Think </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/usrHome"> Home </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropDownMenuLink" role="button", data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                             Features 
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropDownMenuLink">
-                            <a class="dropdown-item" href="policyTrendingIndex"> Policy Trending Index (PTI) </a>
-                            <a class="dropdown-item" href="industryInfoDB"> Industry Information Database (IID) </a>
-                            <a class="dropdown-item" href="#"> Coming Soon </a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"> Contact</a>
-                    </li>
-                </ul>
-                <form action="/database" class="form-control form-control-dark w-50">
-                    <input type="text" name="search" placeholder="Search" aria-label="Search" style="margin-left: 5%;">
-                </form>
-            </div>
+        <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+            <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Company name</a>
+            <form action="/database" class="w-100">
+                <input name="search" class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search" style="margin-top: 1%;">
+            </form>
+            <ul class="navbar-nav px-3">
+                <li class="nav-item text-nowrap">
+                    <a class="nav-link" href="/logout">Sign out</a>
+                </li>
+            </ul>
         </nav>

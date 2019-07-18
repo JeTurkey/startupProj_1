@@ -48,6 +48,25 @@ var usrSchema = new mongoose.Schema({
     usrname: String
 })
 
+var companySchema = new mongoose.Schema({
+    name: String,
+    location: String
+})
+
+var company = mongoose.model("Company", companySchema)
+
+// company.create({
+//     name: "IDC",
+//     location: "Beijing"
+// }, function(err, company){
+//     if(err){
+//         console.log(err)
+//     } else {
+//         console.log("Data inserted")
+//         console.log(company)
+//     }
+// })
+
 
 
 // ====================
@@ -57,6 +76,9 @@ var usrSchema = new mongoose.Schema({
 var updateLog=[
     {version: "beta 0.1", date: "2019-07-07", description: "Making sure all pages are working correctly"}
 ]
+
+var sciIndex=[]
+var sheIndex=[]
 
 
 // =====================
@@ -106,7 +128,28 @@ app.get("/logout", function(req, res){
 
 // GET usrhomepage
 app.get("/usrHome", isLoggedIn, function(req, res){
-    res.render("usrHome");
+    request("http://hq.sinajs.cn/list=s_sh000001", function(error, response, body){
+        if(!error & response.statusCode == 200) {
+            console.log("Success")
+            var parsedData = body
+            sciIndex.push(parsedData)
+        } else {
+            console.log("Error")
+            console.log(error)
+        }
+    })
+    request("http://hq.sinajs.cn/list=s_sz399001", function(error, response, body){
+        if(!error & response.statusCode == 200) {
+            console.log("Success")
+            var parsedData = body
+            sheIndex.push(parsedData)
+        } else {
+            console.log("Error")
+            console.log(error)
+        }
+    })
+    
+    res.render("usrHome", {sciIndex: sciIndex, sheIndex: sheIndex});
 })
 
 // GET comments
