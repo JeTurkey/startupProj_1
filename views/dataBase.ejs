@@ -7,7 +7,7 @@
                 <ul class="list-group">
                     <a class="list-group-item list-group-item-action" href="usrHome"> Dashboard </a>
                     <a class="list-group-item list-group-item-action" href="industry"> 行业数据 </a>
-                    <a class="list-group-item list-group-item-action" href="comments"> Comment </a>
+                    <a class="list-group-item list-group-item-action" href="comments"> 行业情绪指数 </a>
                     <a class="list-group-item list-group-item-action active" href="dataBase"> Database </a>
                     <a class="list-group-item list-group-item-action" href="updateLog"> Update Log </a>
                 </ul>
@@ -15,18 +15,27 @@
         </nav>
         <!-- Content goes under -->
         <div class="main-panel col-md-10">
-            <% data["Search"].forEach(function(movie) { %>
+            <a href="/database/new"> 添加新公司 </a>
+            <form action="/database" method="POST">
+                <input type="text" name="companyName">
+                <input type="text" name="location">
+                <input type="number" name="createdYear">
+                <input type="text" name="industry">
+                <input type="submit">
+            </form>
+
+
+            <% data.forEach(function(results) { %>
             <div class="card card-stats card-warning" style="margin: 20px 20px;">
                 <div class="card-body">
                     <h5 class="card-title">
-                        <%= movie["Title"] %>
+                        <%= results.name %>
                     </h5>
                     <h6 class="card-category">
-                        <%= movie["Year"] %>
+                        <%= results["industry"] %>
                     </h6>
-                    <h6>
-
-                    </h6>
+                    <p class="card-text"> <%= results["description"].substring(0,100) %> ... </p>
+                    <a type="button" href="/database/<%= results._id %>" class="btn-outline-primary"> 更多 </a>
                 </div>
             </div>
             <% }) %>

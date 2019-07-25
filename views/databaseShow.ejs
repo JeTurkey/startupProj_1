@@ -1,0 +1,34 @@
+<% include ./partials/headerLoggin %>
+
+<div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky" style="margin-top: 5%;">
+                        <ul class="list-group">
+                                <a class="list-group-item list-group-item-action" href="/usrHome"> Dashboard </a>
+                                <a class="list-group-item list-group-item-action" href="/industry"> 行业数据 </a>
+                                <a class="list-group-item list-group-item-action" href="/comments"> 行业情绪指数 </a>
+                                <a class="list-group-item list-group-item-action" href="/dataBase"> Database </a>
+                                <a class="list-group-item list-group-item-action" href="/updateLog"> Update Log </a>
+                            </ul>
+                </div>
+            </nav>
+            <div class="col-md-10">
+                <!-- 代码在这 -->
+                <p> <%= data.name %> </p>
+                <p> <%= data.location %> </p>
+                <p> <%= data.field %> </p>
+                <p> <%= data.createdYear %> </p>
+                <p> <%= data.fullName %> </p>
+                <p> <%= data.description %> </p>
+                <p> <%= data.population %> </p>
+                <p> <%= data.detail %> </p>
+                <p> <%= data.finance %> </p>
+                <p> <%= data.team %> </p>
+                <p> <%= data.news %> </p>
+
+                
+        </div>
+</div>
+
+<% include ./partials/footer %>

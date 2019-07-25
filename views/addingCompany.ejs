@@ -1,0 +1,84 @@
+<% include ./partials/headerLoggin %>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky" style="margin-top: 5%;">
+                <ul class="list-group">
+                    <a class="list-group-item list-group-item-action" href="/usrHome"> Dashboard </a>
+                    <a class="list-group-item list-group-item-action" href="/industry"> 行业数据 </a>
+                    <a class="list-group-item list-group-item-action" href="/comments"> 行业情绪指数 </a>
+                    <a class="list-group-item list-group-item-action" href="/dataBase"> Database </a>
+                    <a class="list-group-item list-group-item-action" href="/updateLog"> Update Log </a>
+                </ul>
+            </div>
+        </nav>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <!-- 代码在这 -->
+            <div class="row container-fluid">
+                <form action="/database/new" method="POST">
+                    <select name="industry" class="form-control">
+                        <option value="">区块链</option>
+                        <option value="">大数据</option>
+                        <option value="">人工智能</option>
+                        <option value="">医疗</option>
+                    </select>
+                    <div class="row form-group">
+                        <label for="companyInputName"> Name </label>
+                        <input type="text" class="form-control" name="name" placeholder="Industry">
+                    </div>
+                    <div class="row form-group">
+                        <label for="companyInputLocation"> Location </label>
+                        <input type="text" class="form-control" name="location" placeholder="Name">
+                    </div>
+                    <div class="row form-group">
+                        <label for="companyInputField"> 细分领域 </label>
+                        <input type="text" class="form-control" name="field" placeholder="细分领域">
+                    </div>
+                    <div class="row form-group">
+                        <label for="companyInputCreatedYear"> 成立时间 </label>
+                        <input type="text" class="form-control" name="createdYear" placeholder="成立时间">
+                    </div>
+                    <div class="row form-group">
+                        <label for="companyInputDescription"> 简介 </label>
+                        <input type="text" class="form-control" name="description" placeholder="简介">
+                    </div>
+                    <div class="row form-group">
+                        <label for="companyInputFullName"> 母公司名称 </label>
+                        <input type="text" class="form-control" name="description" placeholder="母公司名称">
+                    </div>
+                    <div class="row form-group">
+                        <label for="companyInputPopulation"> 公司人数 </label>
+                        <input type="text" class="form-control" name="population" placeholder="公司人数" value="未知">
+                        <small id="populationHelp" class="form-text text-muted"> Please leave it there if population is
+                            unkonwn </small>
+                    </div>
+                    <div class="row form-group">
+                        <label for="companyInputDetail"> 产品详细 </label>
+                        <input type="text" class="form-control" name="detail" placeholder="产品详细" value="未知">
+                    </div>
+                    <div class="row form-group">
+                        <label for="companyInputFinance"> 融资情况 </label>
+                        <input type="text" class="form-control" name="finance" placeholder="融资情况" aria-describedby="financeHelp">
+                        <small id="financeHelp" class="form-text text-muted"> 格式: &lt; YYYY/MM,轮次,金额,投资方 &gt; </small>
+                    </div>
+                    <div class="row form-group">
+                        <label for="companyInputTeam"> 团队情况 </label>
+                        <input type="text" class="form-control" name="team" placeholder="团队情况">
+                    </div>
+                    <div class="row form-group">
+                        <label for="companyInputNews"> 新闻 </label>
+                        <input type="text" class="form-control" name="news" placeholder="新闻">
+                    </div>
+                    <div class="form-group form-check" >
+                        <input type="checkbox" class="form-check-input" id="confirm">
+                        <label for="confirm" class="form-check-label"> 确认以上信息准确 </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary" disabled> Submit </button>
+                </form>
+            </div>
+        </main>
+    </div>
+</div>
+
+<% include ./partials/footer %>

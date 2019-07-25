@@ -11,7 +11,7 @@
                 <ul class="list-group">
                         <a class="list-group-item list-group-item-action active" href="usrHome"> Dashboard </a>
                         <a class="list-group-item list-group-item-action" href="industry"> 行业数据 </a>
-                        <a class="list-group-item list-group-item-action" href="comments"> Comment </a>
+                        <a class="list-group-item list-group-item-action" href="comments"> 行业情绪指数 </a>
                         <a class="list-group-item list-group-item-action" href="dataBase"> Database </a>
                         <a class="list-group-item list-group-item-action" href="updateLog"> Update Log </a>
                 </ul>
@@ -26,8 +26,8 @@
                                 <div class="col-7 d-flex align-items-center">
                                     <div class="numbers">
                                         <p class="card-category"> 上证指数 (SCI) </p>
-                                        <h4 class="card-title"> <%= JSON.stringify(sciIndex).split(',')[1].slice(0, 7) %> </h4>
-                                        <h6> <%= JSON.stringify(sciIndex).split(',')[3] %> </h6>
+                                        <h4 class="card-title"> <%= data[0].split(',')[1].slice(0, 7) %> </h4>
+                                        <h6> <%= data[0].split(',')[3] %> </h6>
                                     </div>
                                 </div>
                             </div>
@@ -39,8 +39,8 @@
                                 <div class="col-7 d-flex align-items-center">
                                     <div class="numbers">
                                         <p class="card-category"> 深圳指数 (SHE) </p>
-                                        <h4 class="card-title"> <%= JSON.stringify(sheIndex).split(',')[1].slice(0, 7) %></h4>
-                                        <h6> <%= JSON.stringify(sheIndex).split(',')[3] %> </h6>
+                                        <h4 class="card-title"> <%= data[1].split(',')[1].slice(0, 7) %></h4>
+                                        <h6> <%= data[1].split(',')[3] %> </h6>
                                     </div>
                                 </div>
                             </div>

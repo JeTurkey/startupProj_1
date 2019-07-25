@@ -8,7 +8,7 @@
                     <ul class="list-group">
                             <a class="list-group-item list-group-item-action" href="usrHome"> Dashboard </a>
                             <a class="list-group-item list-group-item-action" href="industry"> 行业数据 </a>
-                            <a class="list-group-item list-group-item-action active" href="comments"> Comment </a>
+                            <a class="list-group-item list-group-item-action active" href="comments"> 行业情绪指数 </a>
                             <a class="list-group-item list-group-item-action" href="dataBase"> Database </a>
                             <a class="list-group-item list-group-item-action" href="updateLog"> Update Log </a>
                         </ul>
@@ -18,18 +18,18 @@
         <!-- End of side bar -->
         <!-- Content goes under -->
         <div class="main-panel col-md-10">
-            <% comments.forEach(function(comment){ %>
+            <% data.forEach(function(result){ %>
             <div class="card card-stats card-warning" style="margin: 20px 20px; width: 95%; height: 108;">
                 <div class="card-body">
                     <h6 class="card-title">
-                        <%= comment.title %>
+                        <%= result.Basic[0].Title %>
                     </h6>
                     <h5 class="card-category">
-                        <%= comment.url %>
+                        <%= result.Basic[0].Date %>
                     </h5>
-                    <img src="<%= comment.image %>">
+                    
                     <h6>
-                        <%= comment.content %>
+                        <%= result.Basic[1] %>
                     </h6>
                 </div>
             </div>

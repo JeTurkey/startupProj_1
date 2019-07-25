@@ -1,23 +1,56 @@
 <% include ./partials/headerLoggin %>
 
 <div class="container-fluid">
-        <div class="row">
-            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                <div class="sidebar-sticky" style="margin-top: 5%;">
-                        <ul class="list-group">
-                                <a class="list-group-item list-group-item-action" href="usrHome"> Dashboard </a>
-                                <a class="list-group-item list-group-item-action active" href="industry"> 行业数据 </a>
-                                <a class="list-group-item list-group-item-action" href="comments"> Comment </a>
-                                <a class="list-group-item list-group-item-action" href="dataBase"> Database </a>
-                                <a class="list-group-item list-group-item-action" href="updateLog"> Update Log </a>
-                            </ul>
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky" style="margin-top: 5%;">
+                <ul class="list-group">
+                    <a class="list-group-item list-group-item-action" href="usrHome"> Dashboard </a>
+                    <a class="list-group-item list-group-item-action active" href="industry"> 行业数据 </a>
+                    <a class="list-group-item list-group-item-action" href="comments"> 行业情绪指数 </a>
+                    <a class="list-group-item list-group-item-action" href="dataBase"> Database </a>
+                    <a class="list-group-item list-group-item-action" href="updateLog"> Update Log </a>
+                </ul>
+            </div>
+        </nav>
+        <div class="col-md-10">
+            <!-- 代码在这 -->
+            <div class="row">
+                <h1> Blockchain </h1>
+            </div>
+            <div class="row dropdown-divider"></div>
+            <div class="row">
+                <div class="col-md-3" style="margin-top: 2%;">
+                    <div class="card card-stats card-warning">
+                        <div class="card-body">
+                            <div class="col-7 d-flex align-items-center">
+                                <div class="numbers">
+                                    <p class="card-category"> 项目总数 </p>
+                                    <h4 class="card-title"> <%= data.length %> </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </nav>
-            <div class="col-md-10">
-                <!-- 代码在这 -->
-
-
+            </div> 
+            <div class="row dropdown-divider"></div>
+            <div class="row"></div>
+                <div class="col-md-3" style="margin-top: 2%;">
+                    <div class="card card-stats card-warning">
+                        <div class="card-body">
+                            <div class="col-7 d-flex align-items-center">
+                                <div class="numbers">
+                                    <p class="card-category"> 北京市 </p>
+                                    <h4 class="card-title">
+                                        <% var count = 0;  for(var i = 0; i < data.length; i++) { if (JSON.stringify(data[i]["location"]).substring(1, 3) == "北京" ) {count += 1}} %>
+                                        <%= count %></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-</div>
+    </div>
 
-<% include ./partials/footer %>
+    <% include ./partials/footer %>
