@@ -7,7 +7,7 @@
                 <ul class="list-group">
                     <a class="list-group-item list-group-item-action" href="/usrHome"> Dashboard </a>
                     <a class="list-group-item list-group-item-action" href="/industry"> 行业数据 </a>
-                    <a class="list-group-item list-group-item-action" href="/comments"> 行业情绪指数 </a>
+                    <a class="list-group-item list-group-item-action" href="/news"> 行业情绪指数 </a>
                     <a class="list-group-item list-group-item-action" href="/dataBase"> Database </a>
                     <a class="list-group-item list-group-item-action" href="/updateLog"> Update Log </a>
                 </ul>
@@ -25,11 +25,12 @@
                     </select>
                     <div class="row form-group">
                         <label for="companyInputName"> Name </label>
-                        <input type="text" class="form-control" name="name" placeholder="Industry">
+                        <input type="text" class="form-control" name="name" placeholder="企业名称">
                     </div>
                     <div class="row form-group">
                         <label for="companyInputLocation"> Location </label>
-                        <input type="text" class="form-control" name="location" placeholder="Name">
+                        <input type="text" class="form-control" name="location" placeholder="Location">
+                        <small class="form-text text-muted"> 例如：北京市</small>
                     </div>
                     <div class="row form-group">
                         <label for="companyInputField"> 细分领域 </label>
@@ -45,7 +46,7 @@
                     </div>
                     <div class="row form-group">
                         <label for="companyInputFullName"> 母公司名称 </label>
-                        <input type="text" class="form-control" name="description" placeholder="母公司名称">
+                        <input type="text" class="form-control" name="fullName" placeholder="母公司名称">
                     </div>
                     <div class="row form-group">
                         <label for="companyInputPopulation"> 公司人数 </label>
@@ -55,12 +56,55 @@
                     </div>
                     <div class="row form-group">
                         <label for="companyInputDetail"> 产品详细 </label>
-                        <input type="text" class="form-control" name="detail" placeholder="产品详细" value="未知">
+
+                    </div>
+                    <div class="row form-group">
+                        <div id="productInfo1">
+                            <div class="col">
+                                <label for="companyInputDetail"> 产品 </label>
+                                <input type="text" class="form-control" name="detail1" placeholder="产品名称" value="未知">
+                            </div>
+                            <div class="col">
+                                <label for="companyInputDetailDescription"> 产品描述</label>
+                                <input type="text" class="form-control" name="detailDescription1" placeholder="产品描述">
+                            </div>
+                        </div>
+                        <div class="input-group" id="productInfoGroup">
+                            <button class="btn btn-primary" type="button" id="addProductInfo" style="margin-top: 5%;">
+                                <span>+</span> </button>
+                            <button class="btn btn-secondary" type="button" id="dropProductInfo"> <span> - </span>
+                            </button>
+                        </div>
                     </div>
                     <div class="row form-group">
                         <label for="companyInputFinance"> 融资情况 </label>
-                        <input type="text" class="form-control" name="finance" placeholder="融资情况" aria-describedby="financeHelp">
-                        <small id="financeHelp" class="form-text text-muted"> 格式: &lt; YYYY/MM,轮次,金额,投资方 &gt; </small>
+                    </div>
+                    <div class="row form-group">
+                        <div id="financeInfo1">
+                            <div class="col-sm">
+                                <label for="companyFinanceDate"> 日期 </label>
+                                <input type="text" class="form-control" name="financeDate" placeholder="YYYY/MM"
+                                    aria-describedby="financeHelp">
+                            </div>
+                            <div class="col-sm">
+                                <label for="companyFinanceRound"> 轮次 </label>
+                                <input type="text" class="form-control" name="financeRound" placeholder="轮次">
+                            </div>
+                            <div class="col-sm">
+                                <label for="companyFinanceAmount"> 金额 </label>
+                                <input type="text" class="form-control" name="financeAmount" placeholder="金额">
+                            </div>
+                            <div class="col-sm">
+                                <label for="companyFinanceInvestor"> 投资方 </label>
+                                <input type="text" class="form-control" name="financeInvestor" placeholder="投资方">
+                            </div>
+                        </div>
+                        <div class="input-group" id="productInfoGroup">
+                                <button class="btn btn-primary" type="button" id="addFinanceInfo" style="margin-top: 5%;">
+                                    <span>+</span> </button>
+                                <button class="btn btn-secondary" type="button" id="dropFinanceInfo"> <span> - </span>
+                                </button>
+                        </div>
                     </div>
                     <div class="row form-group">
                         <label for="companyInputTeam"> 团队情况 </label>
@@ -70,15 +114,105 @@
                         <label for="companyInputNews"> 新闻 </label>
                         <input type="text" class="form-control" name="news" placeholder="新闻">
                     </div>
-                    <div class="form-group form-check" >
+                    <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input" id="confirm">
                         <label for="confirm" class="form-check-label"> 确认以上信息准确 </label>
                     </div>
-                    <button type="submit" class="btn btn-primary" disabled> Submit </button>
+                    <button type="submit" class="btn btn-primary"> Submit </button>
                 </form>
             </div>
         </main>
     </div>
 </div>
+
+<!-- <script>
+$(document).ready(function() {
+    var max_field = 5;
+    var wrapper = $("#item");
+    var add_button = $(".add_field_button");
+
+    var x = 1;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(x < max_field) {
+            x++;
+            $(wrapper).append('<div class="form-group"><label for="title">Author Email:</label>' +
+                '<input class="form-control col-md-11" id="author_email" type="email" placeholder=""name="author"/>' +
+                '<a href="#" class="remove_field"><i class="fa fa-times"></a></div>');
+        }
+    });
+    $(wrapper).on("click", ".remove_field", function(e){
+        e.preventDefault(); $(this.prarent('div').remove())
+    })
+});
+
+</script>  -->
+
+<script>
+    var productCount = 1
+    $('#addProductInfo').click(function () {
+        if (productCount > 4) {
+            next()
+        }
+        $('#productInfo' + productCount).last().after('<div id="productInfo' + (productCount + 1) + '">' +
+            '<div class="col">' +
+            '<label for="companyInputDetail"> 产品 ' + (productCount + 1) + ' </label>' +
+            '<input type="text" class="form-control" name="detail' + (productCount + 1) + '" placeholder="产品名称"' +
+            '</div>' +
+            '<div class="col">' +
+            '<label for="companyInputDetailDescription"> 产品描述 ' + (productCount + 1) + '</label>' +
+            '<input type="text" class="form-control" name="detailDescription' + (productCount + 1) + '" placeholder="产品描述">' +
+            '</div>' +
+            '</div>')
+        productCount += 1
+    });
+
+    $('#dropProductInfo').click(function () {
+        if (productCount == 1) {
+            next()
+        }
+        $('#productInfo' + productCount).last().remove();
+        productCount -= 1
+    })
+
+    var financeCount = 1
+    $('#addFinanceInfo').click(function() {
+        if(financeCount > 4) {
+            next()
+        }
+        $('#financeInfo' + financeCount).last().after('<div id="financeInfo' + (financeCount + 1) + '">' +
+                            '<div class="col-sm">' +
+                                '<label for="companyFinanceDate"> 日期' + (financeCount + 1) + ' </label>' +
+                                '<input type="text" class="form-control" name="financeDate' + (financeCount + 1) + '" placeholder="YYYY/MM" aria-describedby="financeHelp">' +
+                            '</div>' +
+                            '<div class="col-sm">' +
+                                '<label for="companyFinanceRound"> 轮次' + (financeCount + 1) + ' </label>' +
+                                '<input type="text" class="form-control" name="financeRound' + (financeCount + 1) + '" placeholder="轮次">' +
+                            '</div>' +
+                            '<div class="col-sm">' +
+                                '<label for="companyFinanceAmount"> 金额' + (financeCount + 1) + ' </label>' +
+                                '<input type="text" class="form-control" name="financeAmount' + (financeCount + 1) + '" placeholder="金额">' +
+                            '</div>' +
+                            '<div class="col-sm">' +
+                                '<label for="companyFinanceInvestor"> 投资方' + (financeCount + 1) + ' </label>' +
+                                '<input type="text" class="form-control" name="financeInvestor' + (financeCount + 1) + '" placeholder="投资方">' +
+                            '</div>' +
+                        '</div>')
+                        financeCount += 1
+    })
+
+    $('#dropFinanceInfo').click(function() {
+        if(financeCount == 1) {
+            next()
+        }
+        $('#financeInfo' + financeCount).last().remove();
+        financeCount -= 1;
+    })
+
+
+
+
+
+</script>
 
 <% include ./partials/footer %>

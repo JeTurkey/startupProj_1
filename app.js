@@ -160,7 +160,6 @@ app.get("/usrHome", isLoggedIn, function(req, res){
             return body
         });
     }).then(function(results){
-        console.log(results);
         res.render("usrHome", {data: results})
     })
     
@@ -187,17 +186,17 @@ app.get("/usrHome", isLoggedIn, function(req, res){
 
 // GET comments
 
-app.get("/comments", isLoggedIn, function(req, res){
+app.get("/news", isLoggedIn, function(req, res){
     var comments = [
         {title: "CSRC: 146 Million independent investors in China, 46.6% are chasing after booming", url: "https://wallstreetcn.com/articles/3448807", content: "For exmaple", image: "https://www.thesprucepets.com/thmb/3dF7d-nxYqKk2zs5X0HFLn8ki3w=/960x0/filters:no_upscale():max_bytes(150000):strip_icc()/40926432_560505141051912_3896594467564281999_n-5ba052bac9e77c0050e669bb.jpg"},
         {title: "CSRC: 146 Million independent investors in China, 46.6% are chasing after booming", url: "https://wallstreetcn.com/articles/3448807", content: "For exmaple", image: "/assets/img/Corgi_1.jpg"}
     ]
-    news.find({}, function(err, allResults){
+    news.find({},{}, {limit: 10}, function(err, allResults){
         if (err) {
             console.log(err)
         } else {
             console.log("Success")
-            res.render("comments", {comments: comments, data: allResults});
+            res.render("news", {comments: comments, data: allResults});
         }
     })
 
@@ -205,15 +204,27 @@ app.get("/comments", isLoggedIn, function(req, res){
 })
 
 // POST comments
-app.post("/comments", isLoggedIn, function(req, res){
+app.post("/news", isLoggedIn, function(req, res){
     
 })
+
+// GET news page
+app.get("/news/new", isLoggedIn, function(req, res){
+    res.render("addNews")
+})
+
+// POST news Page
+app.post("/news/new", isLoggedIn, function(req, res){
+
+})
+
+
 
 // GET Database
 app.get("/database", isLoggedIn, function(req, res){
     var query = req.query.search;
     console.log(query)
-    company.find({name: new RegExp(query, "i")}, function(err, allResults){
+    company.find({name: new RegExp(query, "i")}, {}, {limit: 10}, function(err, allResults){
         if (err) {
             console.log("Error")
             console.log(err)
@@ -232,26 +243,6 @@ app.get("/database", isLoggedIn, function(req, res){
     // }
     // })
     // res.render("dataBase")
-})
-
-// POST Database
-app.post("/database", isLoggedIn, function(req, res){
-    var name = req.body.companyName
-    var location = req.body.location
-    var createdYear = req.body.createdYear
-    var industry = req.body.industry
-
-    var newCompany = {name: name, location: location, createdYear: createdYear, industry: industry}
-
-    company.create(newCompany, function(err, company){
-        if (err) {
-            console.log("Error")
-        } else {
-            console.log("Success")
-            console.log(company)
-            res.redirect("/database")
-        }
-    })
 })
 
 
@@ -282,7 +273,31 @@ app.get("/database/new", isLoggedIn, function(req, res){
 })
 
 app.post("/database/new", isLoggedIn, function(req, res){
+    var industry = req.body.industry
+    var name = req.body.name
+    var location = req.body.location
+    var field = req.body.createdYear
+    var description = req.body.description
+    var fullName = req.body.fullName
+    var population = req.body.population
+    var detail = req.body.detail
+    var finance = req.body.finance
+    var team = req.body.team
+    var news = req.body.news
 
+    var newCompany = {indsutry: industry, name: name, location: location, field: field,
+                      description: description, fullName: fullName, population: population, detail: detail,
+                      finance: finance, team: team, news: news};
+
+    company.create(newCompany, function(err, company){
+        if (err) {
+            console.log("Error")
+        } else {
+            console.log("New company has been added Successfully")
+            console.log(company)
+            res.redirect("/database")
+        }
+    })
 })
 
 // Get industryShow page
@@ -302,6 +317,7 @@ app.get("/dataBase/:id", isLoggedIn, function(req, res){
 // =========================================================================================================
 //                                             End of Routes
 // =========================================================================================================
+
 
 
 // =========================================================================================================
