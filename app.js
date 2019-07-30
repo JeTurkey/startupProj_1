@@ -99,7 +99,8 @@ var news = mongoose.model("new", newsSchema)
 // ====================
 
 var updateLog=[
-    {version: "beta 0.1", date: "2019-07-07", description: "Making sure all pages are working correctly"}
+    {version: "beta 0.1", date: "2019-07-07", description: "Making sure all pages are working correctly"},
+    {version: "beta 0.2", date: "2019-07-30", description: "行业数据库搭建完成，可以增加行业信息。 行业数据界面已经接通，行业情绪指数的新闻接口已经开放。首页接入新浪财经API。"}
 ]
 
 
@@ -281,23 +282,44 @@ app.post("/database/new", isLoggedIn, function(req, res){
     var fullName = req.body.fullName
     var population = req.body.population
     var detail = req.body.detail
-    var finance = req.body.finance
-    var team = req.body.team
-    var news = req.body.news
+    var detailDescription = req.body.detailDescription
+    var financeDate = req.body.financeDate
+    var financeRound = req.body.financeRound
+    var financeAmount = req.body.financeAmount
+    var financeCurrency = req.body.financeCurrency
+    var financeInvestor = req.body.financeInvestor
+    var teamName = req.body.teamName
+    var teamPosition = req.body.teamPosition
+    var teamBackground = req.body.teamBackground
+    var newsTitle = req.body.newsTitle
+    var newsSource = req.body.newsSource
+    var newsDate = req.body.newsDate
+    var newsContent = req.body.newsContent
 
     var newCompany = {indsutry: industry, name: name, location: location, field: field,
-                      description: description, fullName: fullName, population: population, detail: detail,
-                      finance: finance, team: team, news: news};
+                      description: description, fullName: fullName, population: population, detail: {detailName: detail, detailDescription: detailDescription},
+                      finance: {financeDate: financeDate, financeRound: financeRound, financeAmount: financeAmount, financeCurrency: financeCurrency,financeInvestor: financeInvestor}, 
+                      team: {
+                          teamName: teamName,
+                          teamPosition: teamPosition,
+                          teamBackground: teamBackground
+                      }, news: {
+                          newsTitle: newsTitle,
+                          newsSource: newsSource,
+                          newsDate: newsDate,
+                          newsContent: newsContent
+                      }};
 
-    company.create(newCompany, function(err, company){
-        if (err) {
-            console.log("Error")
-        } else {
-            console.log("New company has been added Successfully")
-            console.log(company)
-            res.redirect("/database")
-        }
-    })
+    console.log(newCompany)
+    // company.create(newCompany, function(err, company){
+    //     if (err) {
+    //         console.log("Error")
+    //     } else {
+    //         console.log("New company has been added Successfully")
+    //         console.log(company)
+    //         res.redirect("/database")
+    //     }
+    // })
 })
 
 // Get industryShow page

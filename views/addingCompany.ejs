@@ -62,11 +62,11 @@
                         <div id="productInfo1">
                             <div class="col">
                                 <label for="companyInputDetail"> 产品 </label>
-                                <input type="text" class="form-control" name="detail1" placeholder="产品名称" value="未知">
+                                <input type="text" class="form-control" name="detail" placeholder="产品名称" value="未知">
                             </div>
                             <div class="col">
                                 <label for="companyInputDetailDescription"> 产品描述</label>
-                                <input type="text" class="form-control" name="detailDescription1" placeholder="产品描述">
+                                <input type="text" class="form-control" name="detailDescription" placeholder="产品描述">
                             </div>
                         </div>
                         <div class="input-group" id="productInfoGroup">
@@ -95,24 +95,75 @@
                                 <input type="text" class="form-control" name="financeAmount" placeholder="金额">
                             </div>
                             <div class="col-sm">
+                                <label for="companyFinanceAmount"> 货币 </label>
+                                <input type="text" class="form-control" name="financeCurrency" placeholder="币种">
+                            </div>
+                            <div class="col-sm">
                                 <label for="companyFinanceInvestor"> 投资方 </label>
                                 <input type="text" class="form-control" name="financeInvestor" placeholder="投资方">
                             </div>
                         </div>
-                        <div class="input-group" id="productInfoGroup">
-                                <button class="btn btn-primary" type="button" id="addFinanceInfo" style="margin-top: 5%;">
-                                    <span>+</span> </button>
-                                <button class="btn btn-secondary" type="button" id="dropFinanceInfo"> <span> - </span>
-                                </button>
-                        </div>
                     </div>
+                    <div class="input-group" id="financeInfoGroup">
+                        <button class="btn btn-primary" type="button" id="addFinanceInfo" style="margin-top: 5%;">
+                            <span>+</span> </button>
+                        <button class="btn btn-secondary" type="button" id="dropFinanceInfo"> <span> - </span>
+                        </button>
+                    </div>
+
                     <div class="row form-group">
                         <label for="companyInputTeam"> 团队情况 </label>
-                        <input type="text" class="form-control" name="team" placeholder="团队情况">
+                    </div>
+                    <div class="row form-group">
+                        <div id="teamInfo1">
+                            <div class="col-sm">
+                                <label for="companyTeamName"> 姓名 </label>
+                                <input type="text" class="form-control" name="teamName" placeholder="姓名">
+                            </div>
+                            <div class="col-sm">
+                                <label for="companyTeamPosition"> 职位 </label>
+                                <input type="text" class="form-control" name="teamPosition" placeholder="职位">
+                            </div>
+                            <div class="col-sm">
+                                <label for="companyTeamBackground"> 背景 </label>
+                                <input type="text" class="form-control" name="teamBackground" placeholder="背景">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group" id="teamInfoGroup">
+                        <button class="btn btn-primary" type="button" id="addTeamInfo" style="margin-top: 5%;">
+                            <span> + </span> </button>
+                        <button class="btn btn-secondary" type="button" id="dropTeamInfo"> <span> - </span>
+                        </button>
                     </div>
                     <div class="row form-group">
                         <label for="companyInputNews"> 新闻 </label>
-                        <input type="text" class="form-control" name="news" placeholder="新闻">
+                    </div>
+                    <div class="row form-group">
+                        <div id="news1">
+                            <div class="col-sm">
+                                <label for="newsTitle"> 新闻标题 </label>
+                                <input type="text" class="form-control" name="newsTitle" placeholder="新闻标题">
+                            </div>
+                            <div class="col-sm">
+                                <label for="newsTitle"> 新闻来源 </label>
+                                <input type="text" class="form-control" name="newsSource" placeholder="新闻来源">
+                            </div>
+                            <div class="col-sm">
+                                <label for="newsTitle"> 新闻日期 </label>
+                                <input type="text" class="form-control" name="newsDate" placeholder="新闻日期">
+                            </div>
+                            <div class="col-sm">
+                                <label for="newsTitle"> 新闻内容 </label>
+                                <input type="text" class="form-control" name="newsContent" placeholder="新闻内容">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group" id="newsGroup">
+                        <button class="btn btn-primary" type="button" id="addNews" style="margin-top: 5%;">
+                            <span> + </span> </button>
+                        <button class="btn btn-secondary" type="button" id="dropNews"> <span> - </span>
+                        </button>
                     </div>
                     <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input" id="confirm">
@@ -125,91 +176,128 @@
     </div>
 </div>
 
-<!-- <script>
-$(document).ready(function() {
-    var max_field = 5;
-    var wrapper = $("#item");
-    var add_button = $(".add_field_button");
-
-    var x = 1;
-    $(add_button).click(function(e){
-        e.preventDefault();
-        if(x < max_field) {
-            x++;
-            $(wrapper).append('<div class="form-group"><label for="title">Author Email:</label>' +
-                '<input class="form-control col-md-11" id="author_email" type="email" placeholder=""name="author"/>' +
-                '<a href="#" class="remove_field"><i class="fa fa-times"></a></div>');
-        }
-    });
-    $(wrapper).on("click", ".remove_field", function(e){
-        e.preventDefault(); $(this.prarent('div').remove())
-    })
-});
-
-</script>  -->
-
 <script>
     var productCount = 1
     $('#addProductInfo').click(function () {
-        if (productCount > 4) {
-            next()
+        if (productCount < 5) {
+            $('#productInfo' + productCount).last().after('<div id="productInfo' + (productCount + 1) + '">' +
+                '<div class="col">' +
+                '<label for="companyInputDetail"> 产品 ' + (productCount + 1) + ' </label>' +
+                '<input type="text" class="form-control" name="detail" placeholder="产品名称"' +
+                '</div>' +
+                '<div class="col">' +
+                '<label for="companyInputDetailDescription"> 产品描述 ' + (productCount + 1) + '</label>' +
+                '<input type="text" class="form-control" name="detailDescription" placeholder="产品描述">' +
+                '</div>' +
+                '</div>')
+            productCount += 1
         }
-        $('#productInfo' + productCount).last().after('<div id="productInfo' + (productCount + 1) + '">' +
-            '<div class="col">' +
-            '<label for="companyInputDetail"> 产品 ' + (productCount + 1) + ' </label>' +
-            '<input type="text" class="form-control" name="detail' + (productCount + 1) + '" placeholder="产品名称"' +
-            '</div>' +
-            '<div class="col">' +
-            '<label for="companyInputDetailDescription"> 产品描述 ' + (productCount + 1) + '</label>' +
-            '<input type="text" class="form-control" name="detailDescription' + (productCount + 1) + '" placeholder="产品描述">' +
-            '</div>' +
-            '</div>')
-        productCount += 1
     });
 
     $('#dropProductInfo').click(function () {
-        if (productCount == 1) {
-            next()
+        if (productCount > 1) {
+            $('#productInfo' + productCount).last().remove();
+            productCount -= 1
         }
-        $('#productInfo' + productCount).last().remove();
-        productCount -= 1
+
     })
 
     var financeCount = 1
-    $('#addFinanceInfo').click(function() {
-        if(financeCount > 4) {
-            next()
+    $('#addFinanceInfo').click(function () {
+        if (financeCount < 5) {
+            $('#financeInfo' + financeCount).last().after('<div id="financeInfo' + (financeCount + 1) + '">' +
+                '<div class="col-sm">' +
+                '<label for="companyFinanceDate"> 日期' + (financeCount + 1) + ' </label>' +
+                '<input type="text" class="form-control" name="financeDate" placeholder="YYYY/MM" aria-describedby="financeHelp">' +
+                '</div>' +
+                '<div class="col-sm">' +
+                '<label for="companyFinanceRound"> 轮次' + (financeCount + 1) + ' </label>' +
+                '<input type="text" class="form-control" name="financeRound" placeholder="轮次">' +
+                '</div>' +
+                '<div class="col-sm">' +
+                '<label for="companyFinanceAmount"> 金额' + (financeCount + 1) + ' </label>' +
+                '<input type="text" class="form-control" name="financeAmount" placeholder="金额">' +
+                '</div>' +
+                '<div class="col-sm">' +
+                '<label for="companyFinanceAmount"> 货币' + (financeCount + 1) + ' </label>' +
+                '<input type="text" class="form-control" name="financeCurrency" placeholder="币种">' +
+                '</div>' +
+                '<div class="col-sm">' +
+                '<label for="companyFinanceInvestor"> 投资方' + (financeCount + 1) + ' </label>' +
+                '<input type="text" class="form-control" name="financeInvestor" placeholder="投资方">' +
+                '</div>' +
+                '</div>')
+            financeCount += 1
+
+
         }
-        $('#financeInfo' + financeCount).last().after('<div id="financeInfo' + (financeCount + 1) + '">' +
-                            '<div class="col-sm">' +
-                                '<label for="companyFinanceDate"> 日期' + (financeCount + 1) + ' </label>' +
-                                '<input type="text" class="form-control" name="financeDate' + (financeCount + 1) + '" placeholder="YYYY/MM" aria-describedby="financeHelp">' +
-                            '</div>' +
-                            '<div class="col-sm">' +
-                                '<label for="companyFinanceRound"> 轮次' + (financeCount + 1) + ' </label>' +
-                                '<input type="text" class="form-control" name="financeRound' + (financeCount + 1) + '" placeholder="轮次">' +
-                            '</div>' +
-                            '<div class="col-sm">' +
-                                '<label for="companyFinanceAmount"> 金额' + (financeCount + 1) + ' </label>' +
-                                '<input type="text" class="form-control" name="financeAmount' + (financeCount + 1) + '" placeholder="金额">' +
-                            '</div>' +
-                            '<div class="col-sm">' +
-                                '<label for="companyFinanceInvestor"> 投资方' + (financeCount + 1) + ' </label>' +
-                                '<input type="text" class="form-control" name="financeInvestor' + (financeCount + 1) + '" placeholder="投资方">' +
-                            '</div>' +
-                        '</div>')
-                        financeCount += 1
+    })
+    $('#dropFinanceInfo').click(function () {
+        if (financeCount > 1) {
+            $('#financeInfo' + financeCount).last().remove();
+            financeCount -= 1;
+        }
+
     })
 
-    $('#dropFinanceInfo').click(function() {
-        if(financeCount == 1) {
-            next()
+    var teamCount = 1
+    $('#addTeamInfo').click(function () {
+        if (teamCount < 5) {
+            $('#teamInfo' + teamCount).last().after('<div id="teamInfo' + (teamCount + 1) + '">' +
+                '<div class="col-sm">' +
+                '<label for="companyTeamName"> 姓名 ' + (teamCount + 1) + ' </label>' +
+                '<input type="text" class="form-control" name="teamName" placeholder="姓名">' +
+                '</div>' +
+                '<div class="col-sm">' +
+                '<label for="companyTeamPosition"> 职位 ' + (teamCount + 1) + ' </label>' +
+                '<input type="text" class="form-control" name="teamPosition" placeholder="职位">' +
+                '</div>' +
+                '<div class="col-sm">' +
+                '<label for="companyTeamBackground"> 背景 ' + (teamCount + 1) + ' </label>' +
+                '<input type="text" class="form-control" name="teamBackground" placeholder="背景">' +
+                '</div>' +
+                '</div>')
+            teamCount += 1
         }
-        $('#financeInfo' + financeCount).last().remove();
-        financeCount -= 1;
+
+    })
+    $('#dropTeamInfo').click(function () {
+        if (teamCount > 1) {
+            $('#teamInfo' + teamCount).last().remove();
+            teamCount -= 1
+        }
+
     })
 
+    var newsCount = 1
+    $('#addNews').click(function () {
+        $('#news' + newsCount).last().after('<div id="news' + (newsCount + 1) + '">' +
+            '<div class="col-sm">' +
+            '<label for="newsTitle"> 新闻标题 ' + (newsCount + 1) + ' </label>' +
+            '<input type="text" class="form-control" name="newsTitle" placeholder="新闻标题">' +
+            '</div>' +
+            '<div class="col-sm">' +
+            '<label for="newsTitle"> 新闻来源 ' + (newsCount + 1) + ' </label>' +
+            '<input type="text" class="form-control" name="newsSource" placeholder="新闻来源">' +
+            '</div>' +
+            '<div class="col-sm">' +
+            '<label for="newsTitle"> 新闻日期 ' + (newsCount + 1) + ' </label>' +
+            '<input type="text" class="form-control" name="newsDate" placeholder="新闻日期">' +
+            '</div>' +
+            '<div class="col-sm">' +
+            '<label for="newsTitle"> 新闻内容 ' + (newsCount + 1) + ' </label>' +
+            '<input type="text" class="form-control" name="newsContent" placeholder="新闻内容">' +
+            '</div>' +
+            '</div>')
+        newsCount += 1
+    })
 
+    $('#dropNews').click(function () {
+        if (newsCount > 1) {
+            $('#news' + newsCount).last().remove()
+            newsCount -= 1
+        }
+    })
 
 
 
