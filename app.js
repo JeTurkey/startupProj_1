@@ -56,6 +56,48 @@ var usrSchema = new mongoose.Schema({
     usrname: String
 })
 
+var productSchema = new mongoose.Schema({
+    detailName: String,
+    detailDescription: String
+})
+
+var product = mongoose.model("product", productSchema)
+
+// var detailSchema = new mongoose.Schema({
+//     detailName: String,
+//     detailDescription: String
+// })
+
+// var detail = mongoose.model("detail", detailSchema)
+
+var financeSchema = new mongoose.Schema({
+    financeDate: String,
+    financeRound: String,
+    financeAmount: String,
+    financeCurrency: String,
+    financeInvestor: String
+})
+
+var finance = mongoose.model("finance", financeSchema)
+
+var teamSchema = new mongoose.Schema({
+    teamName: String,
+    teamPosition: String,
+    teamBackground: String
+})
+
+var team = mongoose.model("team", teamSchema)
+
+var newsSchema = new mongoose.Schema({
+    newsTitle: String,
+    newsSource: String,
+    newsDate: String,
+    newsContent: String
+})
+
+var news = mongoose.model("news", newsSchema)
+
+
 var companySchema = new mongoose.Schema({
     industry: String,
     name: String,
@@ -65,10 +107,10 @@ var companySchema = new mongoose.Schema({
     description: String,
     fullname: String,
     population: String,
-    detail: String,
-    finance: String,
-    team: String,
-    news: String
+    productDetail: [productSchema],
+    finance: [financeSchema],
+    team: [teamSchema],
+    news: [newsSchema]
 })
 
 var newsSchema = new mongoose.Schema({
@@ -134,15 +176,20 @@ app.get("/register", function(req, res){
 // POST Register page
 
 app.post("/register", function(req, res){
-    User.register(new User({username: req.body.username}), req.body.password, function(err, user){
-        if(err){
-            console.log(err);
-            return res.render("register");
-        }
-        passport.authenticate("local")(req, res, function(){
-            res.redirect("/usrHome");
-        })
-    });
+    if(req.body.companyID == 320131){
+        User.register(new User({username: req.body.username, companyID: req.body.companyID}), req.body.password, function(err, user){
+            if(err){
+                console.log(err);
+                return res.render("register");
+            }
+            passport.authenticate("local")(req, res, function(){
+                res.redirect("/usrHome");
+            })
+        });
+    } else {
+        alert("公司代码错误，请咨询管理员获取公司代码。Invalid company code, please contact manager for the code")
+    }
+    
 });
 
 // Log out
@@ -277,11 +324,12 @@ app.post("/database/new", isLoggedIn, function(req, res){
     var industry = req.body.industry
     var name = req.body.name
     var location = req.body.location
-    var field = req.body.createdYear
+    var field = req.body.field
+    var createdYear = req.body.createdYear
     var description = req.body.description
     var fullName = req.body.fullName
     var population = req.body.population
-    var detail = req.body.detail
+    var detailName = req.body.detail
     var detailDescription = req.body.detailDescription
     var financeDate = req.body.financeDate
     var financeRound = req.body.financeRound
@@ -296,30 +344,98 @@ app.post("/database/new", isLoggedIn, function(req, res){
     var newsDate = req.body.newsDate
     var newsContent = req.body.newsContent
 
-    var newCompany = {indsutry: industry, name: name, location: location, field: field,
-                      description: description, fullName: fullName, population: population, detail: {detailName: detail, detailDescription: detailDescription},
-                      finance: {financeDate: financeDate, financeRound: financeRound, financeAmount: financeAmount, financeCurrency: financeCurrency,financeInvestor: financeInvestor}, 
-                      team: {
-                          teamName: teamName,
-                          teamPosition: teamPosition,
-                          teamBackground: teamBackground
-                      }, news: {
-                          newsTitle: newsTitle,
-                          newsSource: newsSource,
-                          newsDate: newsDate,
-                          newsContent: newsContent
-                      }};
 
-    console.log(newCompany)
-    // company.create(newCompany, function(err, company){
-    //     if (err) {
-    //         console.log("Error")
-    //     } else {
-    //         console.log("New company has been added Successfully")
-    //         console.log(company)
-    //         res.redirect("/database")
-    //     }
-    // })
+
+
+    var newCompany = new company({indsutry: industry, name: name, location: location, field: field, createdYear: createdYear,
+                      description: description, fullName: fullName, population: population});
+    
+    if(typeof(detailName) === 'object' && detailName!= null){
+        for(var i = 0; i < detailName.length; i++) {
+            newCompany.productDetail.push({
+                detailName: detailName[i],
+                detailDescription: detailDescription[i]
+            })
+        }
+    } else {
+        newCompany.productDetail.push({
+            detailName: detailName,
+            detailDescription: detailDescription
+        })
+    }
+   
+    console.log("产品细节输入完毕")
+    if(typeof(financeDate) === 'object' && financeDate!= null){
+        for(var i = 0; i < financeDate.length; i++){
+            newCompany.finance.push({
+                financeDate: financeDate[i],
+                financeRound: financeRound[i],
+                financeAmount: financeAmount[i],
+                financeCurrency: financeCurrency[i],
+                financeInvestor: financeInvestor[i]
+            })
+        }
+    } else {
+        newCompany.finance.push({
+            financeDate: financeDate,
+            financeRound: financeRound,
+            financeAmount: financeAmount,
+            financeCurrency: financeCurrency,
+            financeInvestor: financeInvestor
+        })
+    }
+
+    console.log("融资信息输入完成")
+
+    if(typeof(teamName) === 'object' && teamName != null){
+        for(var i = 0; i < teamName.length; i++){
+            newCompany.team.push({
+                teamName: teamName[i],
+                teamPosition: teamPosition[i],
+                teamBackground: teamBackground[i]
+            })
+        }
+    } else {
+        newCompany.team.push({
+            teamName: teamName,
+            teamPosition: teamPosition,
+            teamBackground: teamBackground
+        })
+    }
+
+    console.log("团队信息储存")
+
+    if (typeof(newsTitle) === 'object' && newsTitle != null){
+        for(var i = 0; i < newsTitle.length; i++){
+            newCompany.news.push({
+                newsTitle: newsTitle[i],
+                newsSource: newsSource[i],
+                newsDate: newsDate[i],
+                newsContent: newsContent[i]
+            })
+        }
+    } else {
+        newCompany.news.push({
+            newsTitle: newsTitle,
+            newsSource: newsSource,
+            newsDate: newsDate,
+            newsContent: newsContent
+        })
+    }
+    
+    console.log("新闻信息储存")
+
+
+    company.create(newCompany, function(err, company){
+        if (err) {
+            console.log("Error")
+            console.log(err)
+        } else {
+            console.log("New company has been added Successfully")
+            console.log(company)
+            res.redirect("/database")
+        }
+    })
 })
 
 // Get industryShow page

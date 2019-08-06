@@ -15,6 +15,7 @@
             </nav>
             <div class="col-md-10">
                 <!-- 代码在这 -->
+                <p> <%= data.industry %> </p>
                 <p> <%= data.name %> </p>
                 <p> <%= data.location %> </p>
                 <p> <%= data.field %> </p>
@@ -22,10 +23,39 @@
                 <p> <%= data.fullName %> </p>
                 <p> <%= data.description %> </p>
                 <p> <%= data.population %> </p>
-                <p> <%= data.detail %> </p>
-                <p> <%= data.finance %> </p>
-                <p> <%= data.team %> </p>
-                <p> <%= data.news %> </p>
+                <% data.productDetail.forEach(function(details){ %>
+                    <ul>
+                        <li> <%= details.detailName %> </li>
+
+                        <li> <%= details.detailDescription %> </li>
+                    </ul>
+
+                <% }) %>
+                <% data.finance.forEach(function(finance){ %>
+                    <ul>
+                        <li> <%= finance.financeRound %> </li>
+                        <li> <%= finance.financeDate %> </li>
+                        <li> <%= finance.financeAmount %> </li>
+                        <li> <%= finance.financeCurrency %> </li>
+                        <li> <%= finance.finnanceInvestor %> </li>
+                    </ul>
+                    
+                <% }) %>
+                <% data.team.forEach(function(team){ %>
+                    <ul>
+                        <li> <%= team.teamName %> </li>
+                        <li> <%= team.teamPosition %> </li>
+                        <li> <%= team.teamBackground %> </li>
+                    </ul>
+                <% }) %>
+                <% data.news.forEach(function(news){ %>
+                    <ul>
+                        <li> <%= news.newsTitle %> </li>
+                        <li> <%= news.newsSource %> </li>
+                        <li> <%= news.newsDate %> </li>
+                        <li> <%= news.newsContent %> </li>
+                    </ul>
+                <% }) %>
 
                 
         </div>
