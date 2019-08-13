@@ -45,6 +45,8 @@ app.use(function(req, res, next){
 
 
 
+
+
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -114,14 +116,13 @@ var companySchema = new mongoose.Schema({
 })
 
 var newsSchema = new mongoose.Schema({
-    Basic: [{
+    Basic: {
         Source: String,
         Title: String,
         Date: String,
-        Month: String
-    },
-    {ContentScore: Number}
-    ],
+        Month: String,
+        ContentScore: Number}
+    ,
     Content: [{
         Sentence: String,
         Subject: String,
@@ -203,12 +204,43 @@ app.get("/usrHome", isLoggedIn, function(req, res){
 
     var requests = [{url: "http://hq.sinajs.cn/list=s_sh000001"}, {url: "http://hq.sinajs.cn/list=s_sz399001"}];
 
+    // Promise.map(requests, function(obj){
+    //     return requestPromise(obj).then(function(body){
+    //         return body
+    //     });
+    // }).then(function(results){
+    //     res.render("usrHome", {data: results})
+    // })
+
     Promise.map(requests, function(obj){
         return requestPromise(obj).then(function(body){
             return body
         });
     }).then(function(results){
-        res.render("usrHome", {data: results})
+        news.aggregate([
+            {"$unwind": "$Basic"},
+            {$group:{
+            _id: null,
+            total:{$sum: "$Basic.ContentScore"},
+        count: {$sum: 1}}}]).exec(function(err, indexSum){
+            if(err){
+                return err
+            } else {
+                res.render("usrHome", {data: results, index: indexSum})
+            }
+        })
+        // news.find({}, {}, {limit: 100}, function(err, indexResults){
+        //     if(err){
+        //         console.log(err)
+        //     } else {
+        //         console.log("success")
+        //         var sum = 0;
+        //         for (var i = 0; i < indexResults.length; i++){
+        //             sum += Number(indexResults[i].Basic.ContentScore)
+        //         }
+        //         res.render("usrHome", {data: results, index: sum})
+        //     }
+        // })
     })
     
     // request("http://hq.sinajs.cn/list=s_sh000001", function(error, response, body){
@@ -438,14 +470,28 @@ app.post("/database/new", isLoggedIn, function(req, res){
     })
 })
 
+
+
 // Get industryShow page
 
-app.get("/dataBase/:id", isLoggedIn, function(req, res){
+app.get("/database/:id", isLoggedIn, function(req, res){
     company.findById(req.params.id, function(err, foundCompany){
         if(err){
             console.log(err)
         } else {
             res.render("databaseShow", {data: foundCompany})
+        }
+    })
+})
+
+// Edit industryShow page
+
+app.get("/database/:id/edit", isLoggedIn, function(req, res){
+    company.findById(req.params.id, function(err, companyInfo){
+        if (err) {
+            console.log(err)
+        } else {
+            res.render("databaseUpdate", {data: companyInfo})
         }
     })
 })

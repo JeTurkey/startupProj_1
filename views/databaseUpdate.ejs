@@ -1,0 +1,144 @@
+<% include ./partials/headerLoggin %>
+
+<div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky" style="margin-top: 5%;">
+                        <ul class="list-group">
+                                <a class="list-group-item list-group-item-action" href="/usrHome"> Dashboard </a>
+                                <a class="list-group-item list-group-item-action" href="/industry"> 行业数据 </a>
+                                <a class="list-group-item list-group-item-action" href="/comments"> 行业情绪指数 </a>
+                                <a class="list-group-item list-group-item-action active" href="/database"> Database </a>
+                                <a class="list-group-item list-group-item-action" href="/updateLog"> Update Log </a>
+                            </ul>
+                </div>
+            </nav>
+            <div class="col-md-10">
+                <!-- 代码在这 -->
+                <div class="row container-fluid">
+                    <form action="/database/:id/edit" method="POST">
+                    <div class="row form-group">
+                        <label for="companyInputName"> Name </label>
+                        <input type="text" class="form-control" name="name" value="<%= data.name %>">
+                    </div>
+                    <div class="row form-group">
+                            <label for="companyInputLocation"> Location </label>
+                            <input type="text" class="form-control" name="location" value="<%= data.location %>">
+                            <small class="form-text text-muted"> 例如：北京市</small>
+                        </div>
+                        <div class="row form-group">
+                            <label for="companyInputField"> 细分领域 </label>
+                            <input type="text" class="form-control" name="field" value="<%= data.field %>">
+                        </div>
+                        <div class="row form-group">
+                            <label for="companyInputCreatedYear"> 成立时间 </label>
+                            <input type="text" class="form-control" name="createdYear" value="<%= data.createdYear %>">
+                        </div>
+                        <div class="row form-group">
+                            <label for="companyInputDescription"> 简介 </label>
+                            <input type="text" class="form-control" name="description" value="<%= data.description %>">
+                        </div>
+                        <div class="row form-group">
+                            <label for="companyInputFullName"> 母公司名称 </label>
+                            <input type="text" class="form-control" name="fullName" value="<%= data.fullName %>">
+                        </div>
+                        <div class="row form-group">
+                            <label for="companyInputPopulation"> 公司人数 </label>
+                            <input type="text" class="form-control" name="population" placeholder="公司人数" value="<%= data.population %>">
+                            <small id="populationHelp" class="form-text text-muted"> Please leave it there if population is
+                                unkonwn </small>
+                        </div>
+                        <div class="row form-group">
+                                <label for="companyInputDetail"> 产品详细 </label>
+                        </div>
+                        <% data.productDetail.forEach(function(details){ %>
+                            <div class="row form-group">
+                                <div id="prdocutInfo">
+                                    <div class="col">
+                                        <label for="companyInputDetail"> 产品 </label>
+                                        <input type="text" class="form-control" name="detail" value="<%= details.detailName %>">
+                                    </div>
+                                    <div class="col">
+                                        <label for="companyInputDetailDescription"> 产品描述 </label>
+                                        <textarea type="text" class="form-control" name="detailDescription"> <%= details.detailDescription %> </textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <% })%>
+
+                        <% data.finance.forEach(function(finances){ %>
+                            <div class="row form-group">
+                                <div id="financeInfo">
+                                    <div class="col">
+                                        <label for="companyFinanceDate"> 融资日期 </label>
+                                        <input type="text" class="form-control" value="<%= finances.financeDate %>">
+                                    </div>
+                                    <div class="col">
+                                        <label for="companyFinanceRound"> 融资轮次 </label>
+                                        <input type="text" class="form-control" name="financeRound" value="<%= finances.financeRound %>">
+                                    </div>
+                                    <div class="col">
+                                            <label for="companyFinanceAmount"> 融资金额 </label>
+                                            <input type="number" class="form-control" name="financeAmount" value="<%= finances.financeAmount %>">
+                                    </div>
+                                    <div class="col">
+                                            <label for="companyFinanceAmount"> 货币 </label>
+                                            <input type="text" class="form-control" name="financeCurrency" value="<%= finances.financeCurrency %>">
+                                    </div>
+                                    <div class="col">
+                                            <label for="companyFinanceInvestor"> 投资方 </label>
+                                            <input type="text" class="form-control" name="financeInvestor" value="<%= finance.financeInvestor %>">
+                                    </div>
+                                </div>
+                            </div>
+                        <% }) %>
+
+                        <% data.team.forEach(function(member){ %>
+                            <div class="row form-group">
+                                <div id="teamInfo">
+                            <div class="col-sm">
+                                    <label for="companyTeamName"> 姓名 </label>
+                                    <input type="text" class="form-control" name="teamName" value="<%= member.teamName %>">
+                                </div>
+                                <div class="col-sm">
+                                    <label for="companyTeamPosition"> 职位 </label>
+                                    <input type="text" class="form-control" name="teamPosition" value="<%= member.teamPosition %>">
+                                </div>
+                                <div class="col-sm">
+                                    <label for="companyTeamBackground"> 背景 </label>
+                                    <textarea type="text" class="form-control" name="teamBackground"> <%= member.teamBackground %> </textarea>
+                                </div>
+                            </div>
+                            </div>
+                        <% }) %>
+
+                        <% data.news.forEach(function(news){ %>
+                            <div class="row form-group">
+                                    <div id="news">
+                                        <div class="col-sm">
+                                            <label for="newsTitle"> 新闻标题 </label>
+                                            <input type="text" class="form-control" name="newsTitle" value="<%= news.newsTitle %>">
+                                        </div>
+                                        <div class="col-sm">
+                                            <label for="newsTitle"> 新闻来源 </label>
+                                            <input type="text" class="form-control" name="newsSource" value="<%= news.newsSource %>">
+                                        </div>
+                                        <div class="col-sm">
+                                            <label for="newsTitle"> 新闻日期 </label>
+                                            <input type="text" class="form-control" name="newsDate" value="<%= news.newsDate %>">
+                                        </div>
+                                        <div class="col-sm">
+                                            <label for="newsTitle"> 新闻内容 </label>
+                                            <textarea type="text" class="form-control" name="newsContent"><%= news.newsContent %> </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                        <% }) %>
+                    </form>
+                </div>
+                
+        </div>
+</div>
+
+<% include ./partials/footer %>

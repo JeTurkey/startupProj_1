@@ -24,14 +24,16 @@
             <div class="card card-stats card-warning" style="margin: 20px 20px; width: 95%; height: 150;">
                 <div class="card-body">
                     <h6 class="card-title">
-                        <%= data[i].Basic[0].Title %>
+                        <%= data[i].Basic.Title %>
                     </h6>
                     <h5 class="card-category">
-                        <%= data[i].Basic[0].Date %>
+                        <%= data[i].Basic.Date %>
                     </h5>
-                    
                     <h6>
                         <%= data[i].Content[0].Sentence %>
+                    </h6>
+                    <h6>
+                        <%= data[i].Basic.ContentScore %>
                     </h6>
                 </div>
             </div>
