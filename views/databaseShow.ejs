@@ -1,6 +1,7 @@
 <% include ./partials/headerLoggin %>
 
 <div class="container-fluid">
+
         <div class="row">
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
                 <div class="sidebar-sticky" style="margin-top: 5%;">
@@ -13,8 +14,14 @@
                             </ul>
                 </div>
             </nav>
+
             <div class="col-md-10">
                 <!-- 代码在这 -->
+                <% if(currentUser.username == "test1"){ %>
+                    <a href="/database/<%= data._id %>/edit"> 更新数据 </a>
+                <% } else { %>
+                    <a disabled> 更新数据 </a>
+                <% } %>
                 <p> <%= data.industry %> </p>
                 <p> <%= data.name %> </p>
                 <p> <%= data.location %> </p>
