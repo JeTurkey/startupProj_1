@@ -52,7 +52,12 @@
                                 <div class="col-7 d-flex align-items-center">
                                     <div class="numbers">
                                         <p class="card-category"> 全行业情绪指数 </p>
-                                        <h4 class="card-title" id="emotionIndex"> <%= index[0].total %> </h4>
+                                        <% try { %>
+                                            <h4 class="card-title" id="emotionIndex"> <%= index[0].total %> </h4>
+                                        <% } catch(err) {%>
+                                            <h4 class="card-title" id="effectiveCount"> 不见啦～ </h4>
+                                        <% } %>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -64,7 +69,11 @@
                                 <div class="col-7 d-flex align-items-center">
                                     <div class="numbers">
                                         <p class="card-category"> Effective </p>
-                                        <h4 class="card-title" id="effectiveCount"> <%= index[0].count %> </h4>
+                                        <% try { %>
+                                            <h4 class="card-title" id="effectiveCount"> <%= index[0].count %> </h4>
+                                        <% } catch (err) { %>
+                                            <h4 class="card-title" id="effectiveCount"> 不见啦～ </h4>
+                                        <% } %>
                                     </div>
                                 </div>
                             </div>

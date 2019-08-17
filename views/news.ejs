@@ -20,24 +20,27 @@
         <div class="main-panel col-md-10">
             <a href="/news/new"> 手动添加新闻 </a>
 
-            <% for (var i = 0; i < 10; i++) { %>
-            <div class="card card-stats card-warning" style="margin: 20px 20px; width: 95%; height: 150;">
-                <div class="card-body">
-                    <h6 class="card-title">
-                        <%= data[i].Basic.Title %>
-                    </h6>
-                    <h5 class="card-category">
-                        <%= data[i].Basic.Date %>
-                    </h5>
-                    <h6>
-                        <%= data[i].Content[0].Sentence %>
-                    </h6>
-                    <h6>
-                        <%= data[i].Basic.ContentScore %>
-                    </h6>
-                </div>
-            </div>
-            <% }; %>
+            <% data.forEach(function(news){ %>
+                <div class="card card-stats card-warning" style="margin: 20px 20px; width: 95%; height: 150;">
+                        <div class="card-body">
+                            <h6 class="card-title">
+                                <%= news.Basic.Title %>
+                            </h6>
+                            <h5 class="card-category">
+                                <%= news.Basic.Date %>
+                            </h5>
+                            <h6>
+                                <%= news.Content[0].Sentence %>
+                            </h6>
+                            <h6>
+                                <%= news.Basic.ContentScore %>
+                            </h6>
+                        </div>
+                    </div>
+
+            <% }) %>
+            
+            
         </div>
     </div>
     <!-- End of Content -->

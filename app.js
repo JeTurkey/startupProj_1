@@ -121,7 +121,8 @@ var newsSchema = new mongoose.Schema({
         Title: String,
         Date: String,
         Month: String,
-        ContentScore: Number}
+        ContentScore: Number,
+        submitter: String}
     ,
     Content: [{
         Sentence: String,
@@ -143,7 +144,8 @@ var news = mongoose.model("new", newsSchema)
 
 var updateLog=[
     {version: "beta 0.1", date: "2019-07-07", description: "Making sure all pages are working correctly"},
-    {version: "beta 0.2", date: "2019-07-30", description: "行业数据库搭建完成，可以增加行业信息。 行业数据界面已经接通，行业情绪指数的新闻接口已经开放。首页接入新浪财经API。"}
+    {version: "beta 0.2", date: "2019-07-30", description: "行业数据库搭建完成，可以增加行业信息。 行业数据界面已经接通，行业情绪指数的新闻接口已经开放。首页接入新浪财经API。"},
+    {version: "beta 0.3", date: "2019-08-14", description: "情绪指数接口打通"}
 ]
 
 
@@ -177,7 +179,7 @@ app.get("/register", function(req, res){
 // POST Register page
 
 app.post("/register", function(req, res){
-    if(req.body.companyID == 320131){
+    if(req.body.companyID == 320131 || req.body.companyID == 336699 ){
         User.register(new User({username: req.body.username, companyID: req.body.companyID}), req.body.password, function(err, user){
             if(err){
                 console.log(err);
@@ -295,6 +297,99 @@ app.get("/news/new", isLoggedIn, function(req, res){
 
 // POST news Page
 app.post("/news/new", isLoggedIn, function(req, res){
+    var newsTitle = req.body.title;
+    var newsDate = req.body.date;
+    var newsSource = req.body.source;
+    var newsContent = req.body.content;
+    var newsSubmitter = req.body.submitter;
+    var newsContentScore = 0;
+
+    var sbj = ["李克强", "习近平", "国务院", "发改委", "工信部", "信通院", "证监会"]
+    var senti_pos = ['加强', '推动', '鼓励', '促进', '扶持', '优化', '聚焦', '落实', '建立', '深化', '提高']
+    var senti_neg = ['控制', '反对', '管控', '调查', '制止']
+    var obj = ['基础学科', '互联网', '人工智能', '医疗', '安全', '教育', '交通', '短视频', '文化', '创新', '旅游', '基础研究', '区块链']
+
+    contentSlice = newsContent.split("。")
+    contentSlice.forEach(function(sentence){
+        var score = 0
+        for (var i = 0; i < senti_pos.length; i++){
+            if(sentence.indexOf(senti_pos[i]) >= 0){
+                sentiment = senti_pos[i]
+                score = 1
+                break
+            }
+        }
+        for (var i = 0; i < senti_neg.length; i++){
+            if(sentence.indexOf(senti_neg[i]) >= 0){
+                sentiment = senti_neg[i]
+                score = -1
+                break
+            }
+        }
+
+        newsContentScore += score
+    })
+
+
+    var newNews = new news({Basic: {Title: newsTitle, Source: newsSource, Date: newsDate, submitter: newsSubmitter, ContentScore: newsContentScore}});
+
+    contentSlice = newsContent.split("。")
+    contentSlice.forEach(function(sentence){
+        var subject = ""
+        for (var i = 0; i < sbj.length; i++){
+            if(sentence.indexOf(sbj[i]) >= 0){
+                subject = sbj[i]
+                break
+            } else {
+                subject = "Unknown"
+            }
+        }
+        var sentiment = ""
+        var score = 0
+        for (var i = 0; i < senti_pos.length; i++){
+            if(sentence.indexOf(senti_pos[i]) >= 0){
+                sentiment = senti_pos[i]
+                score = 1
+                break
+            }
+        }
+        for (var i = 0; i < senti_neg.length; i++){
+            if(sentence.indexOf(senti_neg[i]) >= 0){
+                sentiment = senti_neg[i]
+                score = -1
+                break
+            }
+        }
+        var object = ""
+        for (var i = 0; i < obj.length; i++){
+            if(sentence.indexOf(obj[i]) >= 0){
+                object = obj[i]
+                break
+            } else {
+                object = "Unknown"
+            }
+        }
+
+        newNews.Content.push({
+            Sentence: sentence,
+            Subject: subject,
+            Object: object,
+            Score: score
+        })
+    })
+
+    
+
+    news.create(newNews, function(err, news){
+        if (err) {
+            console.log("Error")
+            console.log(err)
+        } else {
+            console.log("New news has been added Successfully")
+            console.log(news)
+            res.redirect("/news")
+        }
+    })
 
 })
 
