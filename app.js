@@ -206,14 +206,6 @@ app.get("/usrHome", isLoggedIn, function(req, res){
 
     var requests = [{url: "http://hq.sinajs.cn/list=s_sh000001"}, {url: "http://hq.sinajs.cn/list=s_sz399001"}];
 
-    // Promise.map(requests, function(obj){
-    //     return requestPromise(obj).then(function(body){
-    //         return body
-    //     });
-    // }).then(function(results){
-    //     res.render("usrHome", {data: results})
-    // })
-
     Promise.map(requests, function(obj){
         return requestPromise(obj).then(function(body){
             return body
@@ -228,42 +220,28 @@ app.get("/usrHome", isLoggedIn, function(req, res){
             if(err){
                 return err
             } else {
+                console.log(indexSum)
                 res.render("usrHome", {data: results, index: indexSum})
+                // news.aggregate([
+                //     {"$unwind": "$Content"},
+                //     // {$match: {
+                //     //     "$Content.Object": {$eq: "人工智能"}
+                //     // }},
+                //     {$group:{
+                //         _id: {field: "$Content.Object"},
+                //         total_ai: {$sum: "$Content.Score"},
+                //         count_ai: {sum: 1}
+                //     }}]).exec(function(err2, index_ai){
+                //         if(err2){
+                //             err2
+                //         } else {
+                //             console.log(index_ai)
+                //             res.render("usrHome", {data: results, index: indexSum, index_ai: index_ai})
+                //         }
+                //     })
             }
         })
-        // news.find({}, {}, {limit: 100}, function(err, indexResults){
-        //     if(err){
-        //         console.log(err)
-        //     } else {
-        //         console.log("success")
-        //         var sum = 0;
-        //         for (var i = 0; i < indexResults.length; i++){
-        //             sum += Number(indexResults[i].Basic.ContentScore)
-        //         }
-        //         res.render("usrHome", {data: results, index: sum})
-        //     }
-        // })
     })
-    
-    // request("http://hq.sinajs.cn/list=s_sh000001", function(error, response, body){
-    //     if(!error & response.statusCode == 200) {
-    //         var parsedData = body
-    //         sciIndex.push(parsedData)
-    //     } else {
-    //         console.log("Error")
-    //         console.log(error)
-    //     }
-    // })
-    // request("http://hq.sinajs.cn/list=s_sz399001", function(error, response, body){
-    //     if(!error & response.statusCode == 200) {
-    //         var parsedData = body
-    //         sheIndex.push(parsedData)
-    //     } else {
-    //         console.log("Error")
-    //         console.log(error)
-    //     }
-    // })
-    // res.render("usrHome", {sciIndex: sciIndex, sheIndex: sheIndex});
 })
 
 // GET comments
@@ -306,8 +284,8 @@ app.post("/news/new", isLoggedIn, function(req, res){
 
     var sbj = ["李克强", "习近平", "国务院", "发改委", "工信部", "信通院", "证监会"]
     var senti_pos = ['加强', '推动', '鼓励', '促进', '扶持', '优化', '聚焦', '落实', '建立', '深化', '提高']
-    var senti_neg = ['控制', '反对', '管控', '调查', '制止']
-    var obj = ['基础学科', '互联网', '人工智能', '医疗', '安全', '教育', '交通', '短视频', '文化', '创新', '旅游', '基础研究', '区块链']
+    var senti_neg = ['控制', '反对', '管控', '调查', '制止', '管理']
+    var obj = ['基础学科', '互联网', '人工智能', '医疗', '制药', '药品', '安全', '教育', '交通', '短视频', '文化', '创新', '旅游', '基础研究', '区块链']
 
     contentSlice = newsContent.split("。")
     contentSlice.forEach(function(sentence){
@@ -587,6 +565,25 @@ app.get("/database/:id/edit", isLoggedIn, function(req, res){
             console.log(err)
         } else {
             res.render("databaseUpdate", {data: companyInfo})
+        }
+    })
+})
+
+// Get industryEmotion page
+
+app.get("/industryEmotion", isLoggedIn, function(req, res){
+    news.aggregate([
+        {"$unwind": "$Basic",
+         "$unwind": "$Content"},
+        {$group:{
+        _id: {field: "$Content.Object"},
+        total:{$sum: "$Content.Score"},
+    count: {$sum: 1}}}]).exec(function(err, indexSum){
+        if(err){
+            return err
+        } else {
+            console.log(indexSum)
+            res.render("industryEmotion", {data: indexSum})
         }
     })
 })
