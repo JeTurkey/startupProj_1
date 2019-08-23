@@ -19,21 +19,25 @@
 
                  分行业情绪指数
 
-                <% data.forEach(function(industry){ %>
-                    <div class="col-md-3">
-                        <div class="card card-stats card-warning">
-                            <div class="card-body">
-                                <div class="col-7 d-flex align-items-center">
-                                    <div class="numbers">
-                                        <p class="card-category"> <%= industry._id.field %> </p>
-                                        <h4 class="card-title"> <%= industry.total %> </h4>
-                                        <h6> <%= industry.count %> </h6>
+                <% for(var i = 0; i < data.length; i++) { %>
+                    <div class="row">
+                    <% for(var j = 0; j < 3; j++){ %>
+                        <div class="col-md-3">
+                            <div class="card card-stats card-warning">
+                                <div class="card-body">
+                                    <div class="col-7 d-flex align-items-center">
+                                        <div class="numbers">
+                                            <p class="card-category"> <%= data[i]._id.field %> </p>
+                                            <h4 class="card-title"> <%= data[i].total %> </h4>
+                                            <h6> <%= data[i].count %> </h6>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                <% }) %>
+                    <%}%>
+                </div>
+                <% } %>
                 
         </div>
 </div>
