@@ -19,8 +19,11 @@
         <!-- End of side bar -->
         <!-- Content goes under -->
         <div class="main-panel col-md-10">
-            <a href="/news/new"> 手动添加新闻 </a>
-
+            <% if(currentUser.companyID == 320131){ %>
+                <a href="/news/new"> 手动添加新闻 (Adding News) </a>
+            <% } else { %>
+                <a disabled> 手动添加新闻 (Adding News) </a>
+            <% } %>
             <% data.forEach(function(news){ %>
                 <div class="card card-stats card-warning" style="margin: 20px 20px; width: 95%; height: 150;">
                         <div class="card-body">

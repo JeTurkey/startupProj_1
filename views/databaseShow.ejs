@@ -19,9 +19,9 @@
             <div class="col-md-10">
                 <!-- 代码在这 -->
                 <% if(currentUser.companyID == 320131){ %>
-                    <a href="/database/<%= data._id %>/edit"> 更新数据 </a>
+                    <a href="/database/<%= data._id %>/edit"> 更新数据 (Update Data) </a>
                 <% } else { %>
-                    <a disabled> 更新数据 </a>
+                    <a disabled> 更新数据 (Update Data) </a>
                 <% } %>
                 <p> <%= data.industry %> </p>
                 <p> <%= data.name %> </p>
