@@ -1,0 +1,144 @@
+<% include ./partials/headerLoggin %>
+
+<div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky" style="margin-top: 5%;">
+                        <ul class="list-group">
+                                <a class="list-group-item list-group-item-action" href="/usrHome" style="margin-top: 5%;"> 首页 </a>                     
+        
+                                <a href="#homeSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action active" style="margin-top: 5%;"> 行业全景图 </a>
+                                <ul class="collapse" id="homeSubmenu1" style="margin-top: 5%">
+                                    <a class="list-group-item list-group-item-action active" href="/governmentGlance"> 政府行业 </a>
+                                    <a class="list-group-item list-group-item-action" href="/industry" style="margin-top: 5%"> 区块链 </a>
+                                </ul>
+                                <a href="#homeSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action" style="margin-top: 5%;"> 行业数据库 </a>
+                                <ul class="collapse" id="homeSubmenu2">
+                                    <a class="list-group-item list-group-item-action" href="/governmentSearch" style="margin-top: 5%;"> 政府行业 </a>
+                                    <a class="list-group-item list-group-item-action" href="/database" style="margin-top: 5%;"> 区块链 </a>
+                                </ul>
+                                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action" style="margin-top: 5%;"> 行业情绪指数 </a>
+                                <ul class="collapse" id="homeSubmenu">
+                                    <a class="list-group-item list-group-item-action" href="/industryEmotion" style="margin-top: 5%;"> 全行业/关键词情绪指数 </a>
+                                    <a class="list-group-item list-group-item-action" href="/news" style="margin-top: 5%;"> 行业情绪指数参考新闻 </a>
+                                </ul>
+                                <a class="list-group-item list-group-item-action" href="/updateLog" style="margin-top: 5%;"> 更新记录 </a>
+                        </ul>
+                </div>
+            </nav>
+            <div class="col-md-10">
+                <!-- 代码在这 -->
+                <div class="row">
+                <!-- 按照省区分数量 -->
+                    <div class="col-md-5" style="margin-top: 5%; margin-left: 3%; height: 200px; width: 300px;">
+                        <h5> xxx年 - xxx年 各省项目统计数量 </h5>
+                        <canvas id='bidCountByProvince1'></canvas>
+                    </div>
+
+                    <div class="col-md-5" style="margin-top: 5%; margin-left: 10%; height: 200px; width: 300px;">
+                            <h5> xxx年 - xxx年 项目类型统计 </h5>
+                            <canvas id='bidCountByProvince2'></canvas>
+                    </div>
+                </div>
+
+                <!-- 某省内单一类别招标情况 -->
+
+                <div class="row">
+                    <div class="col-md-5" style="margin-top: 10%; margin-left: 3%; height: 200px; width: 300px;">
+                        <h5> xx省 各类招标占比 </h5>
+                        <canvas id="bidCountWithinRegion"></canvas>
+                    </div>
+                </div>
+                
+                
+        </div>
+</div>
+
+
+<script>
+    // 按照省区分数量
+    var ctx1 = document.getElementById('bidCountByProvince1').getContext('2d')
+
+    var myChart = new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: ['<%= region[0] %>', '<%= region[1] %>', '<%= region[2] %>', '<%= region[3] %>', '<%= region[4] %>', '<%= region[5] %>',
+                     '<%= region[6] %>', '<%= region[7] %>', '<%= region[8] %>', '<%= region[9] %>', '<%= region[10] %>'],
+            datasets: [{
+                label: '计数',
+
+                data: [<%= countInRegion[0] %>, <%= countInRegion[1] %>, <%= countInRegion[2] %>, <%= countInRegion[3] %>,
+                       <%= countInRegion[4] %>, <%= countInRegion[5] %>, <%= countInRegion[6] %>, <%= countInRegion[7] %>,
+                       <%= countInRegion[8] %>, <%= countInRegion[9] %>, <%= countInRegion[10] %>],
+
+                backgroundColor: 'lightblue'
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    },
+                    gridLines: {
+                        offsetGridLines: true
+                    }
+                }]
+            }
+        }
+    })
+
+    // 按照类型区分数量
+    var ctx2 = document.getElementById('bidCountByProvince2').getContext('2d')
+
+    var myChart = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: ['<%= segment[0] %>', '<%= segment[1] %>', '<%= segment[2] %>', '<%= segment[3] %>', '<%= segment[5] %>', '<%= segment[6] %>',
+                     '<%= segment[7] %>', '<%= segment[8] %>', '<%= segment[9] %>', '<%= segment[10] %>', '<%= segment[11] %>'],
+            datasets: [{
+                label: '计数',
+
+                data: [<%= countInIndustry[0] %>, <%= countInIndustry[1] %>, <%= countInIndustry[2] %>, <%= countInIndustry[3] %>,
+                       <%= countInIndustry[4] %>, <%= countInIndustry[5] %>, <%= countInIndustry[6] %>, <%= countInIndustry[7] %>,
+                       <%= countInIndustry[8] %>, <%= countInIndustry[9] %>, <%= countInIndustry[10] %>],
+
+                backgroundColor: '#85C1E9'
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    },
+                    gridLines: {
+                        offsetGridLines: true
+                    }
+                }]
+            }
+        }
+    })
+
+    // 某省省内类别占比
+
+    var ctx3 = document.getElementById('bidCountWithinRegion')
+
+    var myChart = new Chart(ctx3, {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: [5, 3, 5],
+                backgroundColor: ['#2471A3', '#5499C7', '#7FB3D5']
+            }]
+        },
+        options: {
+
+        }
+    })
+
+
+
+</script>
+
+<% include ./partials/footer %>

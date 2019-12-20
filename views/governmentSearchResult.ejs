@@ -14,12 +14,12 @@
                                 </ul>
                                 <a href="#homeSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action" style="margin-top: 5%;"> 行业数据库 </a>
                                 <ul class="collapse" id="homeSubmenu2">
-                                    <a class="list-group-item list-group-item-action" href="/governmentSearch"> 政府行业 </a>
+                                    <a class="list-group-item list-group-item-action active" href="/governmentSearch"> 政府行业 </a>
                                     <a class="list-group-item list-group-item-action" href="/database"> 区块链 </a>
                                 </ul>
                                 <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action" style="margin-top: 5%;"> 行业情绪指数 </a>
                                 <ul class="collapse" id="homeSubmenu">
-                                    <a class="list-group-item list-group-item-action active" href="/industryEmotion"> 全行业/关键词情绪指数 </a>
+                                    <a class="list-group-item list-group-item-action" href="/industryEmotion"> 全行业/关键词情绪指数 </a>
                                     <a class="list-group-item list-group-item-action" href="/news"> 行业情绪指数参考新闻 </a>
                                 </ul>
                                 <a class="list-group-item list-group-item-action" href="/updateLog" style="margin-top: 5%;"> 更新记录 </a>
@@ -28,32 +28,19 @@
             </nav>
             <div class="col-md-10">
                 <!-- 代码在这 -->
-
-                 分行业情绪指数
-                
-
-
-
-                <% for(var i = 0; i < (data.length / 3); i++) { %>
-                    <div class="row">
-                    <% for(var j = 0; j < 1; j++){ %>
-                        <div class="col-md-3" style="margin-top: 1%;">
-                            <div class="card card-stats card-warning">
-                                <div class="card-body">
-                                    <div class="col-7 d-flex align-items-center">
-                                        <div class="numbers">
-                                            <a class="card-category" href="industryEmotion/<%= data[i + j]._id %>"> <%= data[i + j]._id %> </a>
-                                            <h4 class="card-title"> <%= data[i + j].score %> </h4>
-                                            <h6>  </h6>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                <% if (data.length > 0){ %>
+                    <p> 为您搜索到 <%=data.length %> 条结果 </p>
+                    <% data.forEach(function(item){ %>
+                        <div class="blog-post">
+                            <h2 class="blog-post-title"> <%= item.projectName %> </h2>
+                            <h5 class="blog-meta"> <%= item.province %>    总金额 <%= item.amount %></h5>
                         </div>
-                    <%}%>
-                </div>
+                    <% }) %>
+                    
+                <% } else{ %>
+                    <h5>未搜索到结果</h5>
                 <% } %>
-            
+                
                 
         </div>
 </div>

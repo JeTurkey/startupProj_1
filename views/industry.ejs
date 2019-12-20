@@ -5,53 +5,108 @@
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
             <div class="sidebar-sticky" style="margin-top: 5%;">
                 <ul class="list-group">
-                    <a class="list-group-item list-group-item-action" href="usrHome"> Dashboard </a>
-                    <a class="list-group-item list-group-item-action active" href="industry"> 行业数据 </a>
-                    <a class="list-group-item list-group-item-action" href="news"> 行业情绪指数 </a>
-                    <a class="list-group-item list-group-item-action" href="/industryEmotion"> 分行业情绪指数 </a>
-                    <a class="list-group-item list-group-item-action" href="dataBase"> Database </a>
-                    <a class="list-group-item list-group-item-action" href="updateLog"> Update Log </a>
-                </ul>
+                    <a class="list-group-item list-group-item-action" href="/usrHome" style="margin-top: 5%;"> 首页 </a>                     
+
+                    <a href="#homeSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action active" style="margin-top: 5%;"> 行业全景图 </a>
+                    <ul class="collapse" id="homeSubmenu1" style="margin-top: 5%">
+                        <a class="list-group-item list-group-item-action" href="/governmentGlance"> 政府行业 </a>
+                        <a class="list-group-item list-group-item-action active" href="/industry" style="margin-top: 5%"> 区块链 </a>
+                    </ul>
+                    <a href="#homeSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action" style="margin-top: 5%;"> 行业数据库 </a>
+                    <ul class="collapse" id="homeSubmenu2" style="margin-top: 5%">
+                        <a class="list-group-item list-group-item-action" href="/governmentSearch"> 政府行业 </a>
+                        <a class="list-group-item list-group-item-action" href="/database" style="margin-top: 5%"> 区块链 </a>
+                    </ul>
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action" style="margin-top: 5%;"> 行业情绪指数 </a>
+                    <ul class="collapse" id="homeSubmenu" style="margin-top: 5%">
+                        <a class="list-group-item list-group-item-action" href="/industryEmotion"> 全行业/关键词情绪指数 </a>
+                        <a class="list-group-item list-group-item-action" href="/news" style="margin-top: 5%"> 行业情绪指数参考新闻 </a>
+                    </ul>
+                    <a class="list-group-item list-group-item-action" href="/updateLog" style="margin-top: 5%;"> 更新记录 </a>
+            </ul>
             </div>
         </nav>
         <div class="col-md-10">
             <!-- 代码在这 -->
+            <!-- 行业企业数量统计，by year -->
             <div class="row">
-                <h1> Blockchain </h1>
-            </div>
-            <div class="row dropdown-divider"></div>
-            <div class="row">
-                <div class="col-md-3" style="margin-top: 2%;">
-                    <div class="card card-stats card-warning">
-                        <div class="card-body">
-                            <div class="col-7 d-flex align-items-center">
-                                <div class="numbers">
-                                    <p class="card-category"> 项目总数 </p>
-                                    <h4 class="card-title"> <%= data.length %> </h4>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col-md-5" style="margin-top: 5%; margin-left: 3%; height: 200px; width: 300px;">
+                        <canvas id="companyCountByRegion" style="width: 50%; height: 50%;"></canvas>
                     </div>
-                </div>
-            </div> 
-            <div class="row dropdown-divider"></div>
-            <div class="row"></div>
-                <div class="col-md-3" style="margin-top: 2%;">
-                    <div class="card card-stats card-warning">
-                        <div class="card-body">
-                            <div class="col-7 d-flex align-items-center">
-                                <div class="numbers">
-                                    <p class="card-category"> 北京市 </p>
-                                    <h4 class="card-title">
-                                        <% var count = 0;  for(var i = 0; i < data.length; i++) { if (JSON.stringify(data[i]["location"]).substring(1, 3) == "北京" ) {count += 1}} %>
-                                        <%= count %></h4>
-                                </div>
-                            </div>
-                        </div>
+
+                    <div class="col-md-5" style="margin-top: 5%; margin-left: 3%; height: 200px; width: 300px;">
+                            <canvas id="companyCountBySegment" style="width: 50%; height: 50%;"></canvas>
                     </div>
-                </div>
             </div>
+            
+            <!-- 行业location统计，rank -->
+
+
         </div>
     </div>
+
+    <script>
+    
+    // 企业数量统计by region的图
+
+    var ctx = document.getElementById('companyCountByRegion').getContext('2d')
+
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['<%= region[0] %>', '<%= region[1] %>', '<%= region[2] %>', '<%= region[3] %>', '<%= region[4] %>', '<%= region[5] %>',
+                     '<%= region[6] %>', '<%= region[7] %>', '<%= region[8] %>', '<%= region[9] %>', '<%= region[10] %>'],
+            datasets: [{
+                label: '公司数量计数',
+                fill: false,
+                borderColor: 'lightblue',
+                backgroundColor: 'lightblue',
+                labels: 'company count',
+                data: [<%= countInRegion[0] %>, <%= countInRegion[1] %>, <%= countInRegion[2] %>, <%= countInRegion[3] %>,
+                       <%= countInRegion[4] %>, <%= countInRegion[5] %>, <%= countInRegion[6] %>, <%= countInRegion[7] %>,
+                       <%= countInRegion[8] %>, <%= countInRegion[9] %>, <%= countInRegion[10] %>]
+
+            }]
+        },
+        options: {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'Sample Demostration For 企业数据统计' 
+            }
+        }
+    })
+
+    // 企业数量统计by region的图
+
+    var ctx = document.getElementById('companyCountBySegment').getContext('2d')
+
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['<%= segment[0] %>', '<%= segment[1] %>', '<%= segment[2] %>', '<%= segment[3] %>', '<%= segment[4] %>', '<%= segment[5] %>',
+                     '<%= segment[6] %>', '<%= segment[7] %>', '<%= segment[8] %>', '<%= segment[9] %>', '<%= segment[10] %>'],
+            datasets: [{
+                label: '公司数量计数',
+                fill: false,
+                borderColor: 'lightblue',
+                backgroundColor: 'lightblue',
+                labels: 'company count',
+                data: [<%= countInSegment[0] %>, <%= countInSegment[1] %>, <%= countInSegment[2] %>, <%= countInSegment[3] %>,
+                       <%= countInSegment[4] %>, <%= countInSegment[5] %>, <%= countInSegment[6] %>, <%= countInSegment[7] %>,
+                       <%= countInSegment[8] %>, <%= countInSegment[9] %>, <%= countInSegment[10] %>]
+
+            }]
+        },
+        options: {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'Sample Demostration For 企业数据统计' 
+            }
+        }
+    })
+    
+    </script>
 
     <% include ./partials/footer %>
