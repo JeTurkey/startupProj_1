@@ -54,6 +54,8 @@ passport.deserializeUser(User.deserializeUser());
 
 // DB Schema config
 
+var ObjectId = mongoose.Schema.Types.ObjectId;
+
 var usrSchema = new mongoose.Schema({
     usrname: String
 })
@@ -90,14 +92,14 @@ var teamSchema = new mongoose.Schema({
 
 var team = mongoose.model("team", teamSchema)
 
-var newsSchema = new mongoose.Schema({
+var companyNewsSchema = new mongoose.Schema({
     newsTitle: String,
     newsSource: String,
     newsDate: String,
     newsContent: String
 })
 
-var news = mongoose.model("news", newsSchema)
+var companyNews = mongoose.model("news", companyNewsSchema)
 
 
 var companySchema = new mongoose.Schema({
@@ -105,35 +107,62 @@ var companySchema = new mongoose.Schema({
     name: String,
     field: String,
     location: String,
-    createdYear: Number,
+    createdYear: Date,
     description: String,
     fullname: String,
     population: String,
     productDetail: [productSchema],
     finance: [financeSchema],
     team: [teamSchema],
-    news: [newsSchema]
+    news: [companyNewsSchema]
 })
 
 var newsSchema = new mongoose.Schema({
-    Basic: {
-        Source: String,
-        Title: String,
-        Date: String,
-        Month: String,
-        ContentScore: Number,
-        submitter: String}
-    ,
-    Content: [{
-        Sentence: String,
-        Subject: String,
-        Object: String,
-        Score: Number
-    }]
+    source: String,
+    title: String,
+    date: Date,
+    content: String,
+    tags: Array,
+    originalLink: String
+})
+
+var sentenceSchema = new mongoose.Schema({
+    reference: ObjectId,
+    sentence: String,
+    subject: String,
+    object: String,
+    score: Number
+    
 })
 
 var company = mongoose.model("Company", companySchema)
 var news = mongoose.model("new", newsSchema)
+var sentence = mongoose.model("sentence", sentenceSchema)
+
+var governmentSchema = new mongoose.Schema({
+    projectPublicName: String,
+    projectName: String,
+    subject: String,
+    province: String,
+    items: Array,
+    amount: Number,
+    object: String,
+    intermediate: String
+})
+
+var government = mongoose.model('government', governmentSchema)
+
+var blockchainCompanySchema = new mongoose.Schema({
+    companyCode: String,
+    companyName: String,
+    segment: String,
+    newestFinance: String,
+    serviceType: String,
+    yearFounded: Date,
+    region: String
+})
+
+var blockchaincompany = mongoose.model('blockchaincompany', blockchainCompanySchema)
 
 
 
@@ -170,6 +199,11 @@ app.post("/", passport.authenticate("local", {
     
 });
 
+// GET Portfolio
+app.get("/portfolio", function(req, res){
+    res.render("portfolio")
+})
+
 // GET Register page
 
 app.get("/register", function(req, res){
@@ -204,45 +238,20 @@ app.get("/logout", function(req, res){
 // GET usrhomepage
 app.get("/usrHome", isLoggedIn, function(req, res){
 
-    var requests = [{url: "http://hq.sinajs.cn/list=s_sh000001"}, {url: "http://hq.sinajs.cn/list=s_sz399001"}];
+    // var requests = [{url: "http://hq.sinajs.cn/list=s_sh000001"}, {url: "http://hq.sinajs.cn/list=s_sz399001"}];
+    // // Promise allows to request several urls at a time
+    // Promise.map(requests, function(obj){
+    //     return requestPromise(obj).then(function(body){
+    //         return body
+    //     });
+    // }).then(function(results){
+    //     console.log('request内容获取')
+    //     res.render("usrHome", {data: results})
 
-    Promise.map(requests, function(obj){
-        return requestPromise(obj).then(function(body){
-            return body
-        });
-    }).then(function(results){
-        news.aggregate([
-            {"$unwind": "$Basic"},
-            {$group:{
-            _id: null,
-            total:{$sum: "$Basic.ContentScore"},
-        count: {$sum: 1}}}]).exec(function(err, indexSum){
-            if(err){
-                return err
-            } else {
-                console.log(indexSum)
-                res.render("usrHome", {data: results, index: indexSum})
-                // news.aggregate([
-                //     {"$unwind": "$Content"},
-                //     // {$match: {
-                //     //     "$Content.Object": {$eq: "人工智能"}
-                //     // }},
-                //     {$group:{
-                //         _id: {field: "$Content.Object"},
-                //         total_ai: {$sum: "$Content.Score"},
-                //         count_ai: {sum: 1}
-                //     }}]).exec(function(err2, index_ai){
-                //         if(err2){
-                //             err2
-                //         } else {
-                //             console.log(index_ai)
-                //             res.render("usrHome", {data: results, index: indexSum, index_ai: index_ai})
-                //         }
-                //     })
-            }
+    //         })
+    res.render("usrHome")
         })
-    })
-})
+
 
 // GET comments
 
@@ -263,113 +272,110 @@ app.get("/news", isLoggedIn, function(req, res){
     
 })
 
-// POST comments
-app.post("/news", isLoggedIn, function(req, res){
-    
-})
+
 
 // GET news page
 app.get("/news/new", isLoggedIn, function(req, res){
     res.render("addNews")
 })
 
-// POST news Page
-app.post("/news/new", isLoggedIn, function(req, res){
-    var newsTitle = req.body.title;
-    var newsDate = req.body.date;
-    var newsSource = req.body.source;
-    var newsContent = req.body.content;
-    var newsSubmitter = req.body.submitter;
-    var newsContentScore = 0;
+// // POST news Page
+// app.post("/news/new", isLoggedIn, function(req, res){
+//     var newsTitle = req.body.title;
+//     var newsDate = req.body.date;
+//     var newsSource = req.body.source;
+//     var newsContent = req.body.content;
+//     var newsSubmitter = req.body.submitter;
+//     var newsContentScore = 0;
 
-    var sbj = ["李克强", "习近平", "国务院", "发改委", "工信部", "信通院", "证监会"]
-    var senti_pos = ['加强', '推动', '鼓励', '促进', '扶持', '优化', '聚焦', '落实', '建立', '深化', '提高']
-    var senti_neg = ['控制', '反对', '管控', '调查', '制止', '管理']
-    var obj = ['基础学科', '互联网', '人工智能', '医疗', '制药', '药品', '安全', '教育', '交通', '短视频', '文化', '创新', '旅游', '基础研究', '区块链']
+//     var sbj = ["李克强", "习近平", "国务院", "发改委", "工信部", "信通院", "证监会"]
+//     var senti_pos = ['加强', '推动', '鼓励', '促进', '扶持', '优化', '聚焦', '落实', '建立', '深化', '提高']
+//     var senti_neg = ['控制', '反对', '管控', '调查', '制止', '管理']
+//     var obj = ['基础学科', '互联网', '人工智能', '医疗', '制药', '药品', '安全', '教育', '交通', '短视频', '文化', '创新', '旅游', '基础研究', '区块链']
 
-    contentSlice = newsContent.split("。")
-    contentSlice.forEach(function(sentence){
-        var score = 0
-        for (var i = 0; i < senti_pos.length; i++){
-            if(sentence.indexOf(senti_pos[i]) >= 0){
-                sentiment = senti_pos[i]
-                score = 1
-                break
-            }
-        }
-        for (var i = 0; i < senti_neg.length; i++){
-            if(sentence.indexOf(senti_neg[i]) >= 0){
-                sentiment = senti_neg[i]
-                score = -1
-                break
-            }
-        }
+//     contentSlice = newsContent.split("。")
+//     contentSlice.forEach(function(sentence){
+//         var score = 0
+//         for (var i = 0; i < senti_pos.length; i++){
+//             if(sentence.indexOf(senti_pos[i]) >= 0){
+//                 sentiment = senti_pos[i]
+//                 score = 1
+//                 break
+//             }
+//         }
+//         for (var i = 0; i < senti_neg.length; i++){
+//             if(sentence.indexOf(senti_neg[i]) >= 0){
+//                 sentiment = senti_neg[i]
+//                 score = -1
+//                 break
+//             }
+//         }
 
-        newsContentScore += score
-    })
+//         newsContentScore += score
+//     })
 
 
-    var newNews = new news({Basic: {Title: newsTitle, Source: newsSource, Date: newsDate, submitter: newsSubmitter, ContentScore: newsContentScore}});
+//     var newNews = new companyNews({Basic: {Title: newsTitle, Source: newsSource, Date: newsDate, submitter: newsSubmitter, ContentScore: newsContentScore}});
 
-    contentSlice = newsContent.split("。")
-    contentSlice.forEach(function(sentence){
-        var subject = ""
-        for (var i = 0; i < sbj.length; i++){
-            if(sentence.indexOf(sbj[i]) >= 0){
-                subject = sbj[i]
-                break
-            } else {
-                subject = "Unknown"
-            }
-        }
-        var sentiment = ""
-        var score = 0
-        for (var i = 0; i < senti_pos.length; i++){
-            if(sentence.indexOf(senti_pos[i]) >= 0){
-                sentiment = senti_pos[i]
-                score = 1
-                break
-            }
-        }
-        for (var i = 0; i < senti_neg.length; i++){
-            if(sentence.indexOf(senti_neg[i]) >= 0){
-                sentiment = senti_neg[i]
-                score = -1
-                break
-            }
-        }
-        var object = ""
-        for (var i = 0; i < obj.length; i++){
-            if(sentence.indexOf(obj[i]) >= 0){
-                object = obj[i]
-                break
-            } else {
-                object = "Unknown"
-            }
-        }
+//     contentSlice = newsContent.split("。")
+//     contentSlice.forEach(function(sentence){
+//         var subject = ""
+//         for (var i = 0; i < sbj.length; i++){
+//             if(sentence.indexOf(sbj[i]) >= 0){
+//                 subject = sbj[i]
+//                 break
+//             } else {
+//                 subject = "Unknown"
+//             }
+//         }
+//         var sentiment = ""
+//         var score = 0
+//         for (var i = 0; i < senti_pos.length; i++){
+//             if(sentence.indexOf(senti_pos[i]) >= 0){
+//                 sentiment = senti_pos[i]
+//                 score = 1
+//                 break
+//             }
+//         }
+//         for (var i = 0; i < senti_neg.length; i++){
+//             if(sentence.indexOf(senti_neg[i]) >= 0){
+//                 sentiment = senti_neg[i]
+//                 score = -1
+//                 break
+//             }
+//         }
+//         var object = ""
+//         for (var i = 0; i < obj.length; i++){
+//             if(sentence.indexOf(obj[i]) >= 0){
+//                 object = obj[i]
+//                 break
+//             } else {
+//                 object = "Unknown"
+//             }
+//         }
 
-        newNews.Content.push({
-            Sentence: sentence,
-            Subject: subject,
-            Object: object,
-            Score: score
-        })
-    })
+//         newNews.Content.push({
+//             Sentence: sentence,
+//             Subject: subject,
+//             Object: object,
+//             Score: score
+//         })
+//     })
 
     
 
-    news.create(newNews, function(err, news){
-        if (err) {
-            console.log("Error")
-            console.log(err)
-        } else {
-            console.log("New news has been added Successfully")
-            console.log(news)
-            res.redirect("/news")
-        }
-    })
+//     news.create(newNews, function(err, news){
+//         if (err) {
+//             console.log("Error")
+//             console.log(err)
+//         } else {
+//             console.log("New news has been added Successfully")
+//             console.log(news)
+//             res.redirect("/news")
+//         }
+//     })
 
-})
+// })
 
 
 
@@ -408,16 +414,43 @@ app.get("/updateLog", isLoggedIn, function(req, res){
 // GET industry page
 
 app.get("/industry", isLoggedIn, function(req, res){
-    company.find({}, function(err, allResults){
-        if (err) {
-            console.log(err)
+    blockchaincompany.aggregate([{$group: {_id: '$yearFounded', count: {$sum: 1}}}]).exec(function(err, countByYear){
+        if(err){
+            return err
         } else {
-            console.log("Success")
+            blockchaincompany.aggregate([{$group: {_id: '$region', count: {$sum: 1}}}, {$sort: {count: -1}}]).exec(function(err2, countByRegion){
+                if (err2){ 
+                    return err2
+                } else {
+                    var region = []
+                    var countInRegion = []
+                    for(var i = 0; i <= 10; i++){
+                        region.push(countByRegion[i]._id)
+                        countInRegion.push(countByRegion[i].count)
+                    }
+                    blockchaincompany.aggregate([{$group: {_id: '$segment', count: {$sum: 1}}}, {$sort: {count: -1}}]).exec(function(err3, countBySegment){
+                        if(err3){
+                            return err3
+                        } else {
+                            var segment = []
+                            var countInSegment = []
+                            for (var i = 0; i<= 10; i++){
+                                segment.push(countBySegment[i]._id)
+                                countInSegment.push(countBySegment[i].count)
+                            }
+                            console.log(segment)
+                            console.log(countInSegment)
+                            res.render('industry', {countByYear: countByYear, region: region, countInRegion: countInRegion, segment: segment, countInSegment: countInSegment})
+
+                        }
+                    })
+                    
+                }
+            })
             
-            res.render("industry", {data: allResults})
         }
     })
-    
+
 })
 
 // GET addingCompany page
@@ -572,13 +605,13 @@ app.get("/database/:id/edit", isLoggedIn, function(req, res){
 // Get industryEmotion page
 
 app.get("/industryEmotion", isLoggedIn, function(req, res){
-    news.aggregate([
-        {"$unwind": "$Basic",
-         "$unwind": "$Content"},
-        {$group:{
-        _id: {field: "$Content.Object"},
-        total:{$sum: "$Content.Score"},
-    count: {$sum: 1}}}]).exec(function(err, indexSum){
+    sentence.aggregate(
+        [
+            { $group: {
+                _id: '$object',
+                score: {$sum: '$score'}
+            }}
+        ]).exec(function(err, indexSum){
         if(err){
             return err
         } else {
@@ -587,6 +620,183 @@ app.get("/industryEmotion", isLoggedIn, function(req, res){
         }
     })
 })
+
+// 细分行业关键字页面
+
+app.get("/industryEmotion/:id", isLoggedIn, function(req, res){
+    // 句子数据库中提取对应关键词
+
+    sentence.find({object: req.params.id}, function(err, indSum){
+        if(err){
+            return err
+        }else{
+            console.log(indSum)
+            var tempList = []
+            var scoreList = []
+            indSum.forEach(function(item){
+                scoreList.push(item.score)
+                if(tempList.indexOf(item.reference) >= 0){
+                    // 表内包含reference
+                } else {
+                    // 表内不包含reference
+                    tempList.push(item.reference)
+                }
+            })
+            console.log(tempList)
+            // 还需要一个industry的一个description的collection
+            
+            news.find({tags: req.params.id}, function(err, documents){
+                res.render("specificIndustry", {data: scoreList, docs: documents, title: req.params.id})
+            })
+
+        }
+    })
+    
+})
+
+// 政府行业搜索页面
+
+app.get("/governmentSearch", isLoggedIn, function(req, res){
+    // 
+    res.render("governmentSearch")
+})
+
+// 政府行业搜索检索功能的API
+
+app.get("/governmentDatabaseSearch", isLoggedIn, function(req, res){
+    var locations = req.query.location
+    var industries = req.query.industry
+
+    console.log(locations)
+    console.log('-----')
+    console.log(industries)
+
+    government.find({$or: [{region: locations}, 
+                           {industry: industries},
+                           {region: locations, industry: industries}]}, function(err, rst){
+        if(err){
+            return err
+        } else {
+            console.log(rst)
+            res.render('governmentSearchResult', {data: rst})
+        }
+    })
+})
+
+// 政府行业全景图 页面
+
+app.get("/governmentGlance", isLoggedIn, function(req, res){
+
+    government.aggregate(
+        [{ $group: {
+            _id: '$region',
+            count: {$sum: 1}}},
+         {$sort: {count: -1}}]
+    ).exec(function(err, countByRegion){
+        if(err){
+            return err
+        } else {
+            var region = []
+            var countInRegion = []
+            for(var i = 0; i <= 10; i++){
+                region.push(countByRegion[i]._id)
+                countInRegion.push(countByRegion[i].count)
+            }
+            console.log(region)
+            console.log(countInRegion)
+
+            government.aggregate([{$group:{
+                _id: '$industry',
+                count: {$sum :1}
+            }}, {$sort: {count: -1}}]).exec(function(err2, countByIndustry){
+                if(err2){
+                    return err2
+                } else  {
+                    var countInIndustry = []
+                    var segment = []
+                    for (var i = 0; i <= 10; i++){
+                        countInIndustry.push(countByIndustry[i].count)
+                        segment.push(countByIndustry[i]._id)
+                    }
+                    console.log(segment)
+                    console.log(countInIndustry)
+                    res.render("governmentGlance", {region: region, countInRegion: countInRegion, segment: segment, countInIndustry: countInIndustry})
+                }
+            })
+
+            
+        }
+    })
+    
+})
+
+app.get("/governmentDatabaseBlurSearch", isLoggedIn, function(req, res){
+    var searchField = req.query.search
+
+    console.log(searchField)
+
+    government.find({$or: [{projectPublicName: {$regex: searchField}},
+                           {industry: {$regex: searchField}},
+                           {projectName: {$regex: searchField}},
+                           {region: {$regex: searchField}}
+    ]}, function(err, rst){
+        if (err) {
+            return err
+        } else {
+            console.log(rst)
+            res.render('governmentSearchResult', {data: rst})
+        }
+    })
+
+
+})
+
+app.get('/blockchainDatabaseSearch',  isLoggedIn, function(req, res){
+
+    var location = req.query.location
+    var segment = req.query.segment
+
+    console.log(location)
+    console.log('-----')
+    console.log(segment)
+
+
+
+    blockchaincompany.find({$or: [{region: location}, 
+                            {segment: segment},
+                            {region: location, segment: segment}]}, function(err, rst){
+            if(err){
+            return err
+            } else {
+            console.log(rst)
+            res.render('blockchainSearchResult', {data: rst})
+            }
+            })
+
+    
+    
+})
+
+app.get('/blockchainDatabaseBlurSearch', isLoggedIn, function(req, res){
+    var searchField = req.query.search
+
+    console.log(searchField)
+
+    blockchaincompany.find({companyName: {$regex: searchField}
+
+    }, function(err, rst){
+        if(err) {
+            return err
+        } else {
+            console.log(rst)
+            res.render('blockchainSearchResult', {data: rst})
+        }
+    })
+
+    
+})
+
+
 
 
 
