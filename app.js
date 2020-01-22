@@ -164,6 +164,12 @@ var blockchainCompanySchema = new mongoose.Schema({
 
 var blockchaincompany = mongoose.model('blockchaincompany', blockchainCompanySchema)
 
+var tagDescriptionSchema = new mongoose.Schema({
+    tag: String,
+    description: String
+})
+
+var tagdescription = mongoose.model('tagdescription', tagDescriptionSchema)
 
 
 
@@ -605,6 +611,25 @@ app.get("/database/:id/edit", isLoggedIn, function(req, res){
 // Get industryEmotion page
 
 app.get("/industryEmotion", isLoggedIn, function(req, res){
+    var test = sentence.aggregate(
+        [
+            { $group: {
+                _id: '$object',
+                score: {$sum: '$score'}
+            }}
+        ], function(err, indexSum){
+        if(err){
+            return err
+        } else {
+            console.log('This is indexSum')
+            console.log(indexSum)
+            return indexSum
+
+        }
+    })
+    console.log('This is the test')
+    console.log(test)
+
     sentence.aggregate(
         [
             { $group: {
@@ -619,6 +644,7 @@ app.get("/industryEmotion", isLoggedIn, function(req, res){
             res.render("industryEmotion", {data: indexSum})
         }
     })
+    
 })
 
 // 细分行业关键字页面
@@ -645,8 +671,15 @@ app.get("/industryEmotion/:id", isLoggedIn, function(req, res){
             console.log(tempList)
             // 还需要一个industry的一个description的collection
             
+
+
+            
+
             news.find({tags: req.params.id}, function(err, documents){
-                res.render("specificIndustry", {data: scoreList, docs: documents, title: req.params.id})
+                tagdescription.find({tag: req.params.id}, function(err, rst){
+                    res.render("specificIndustry", {data: scoreList, docs: documents, title: req.params.id, jieshao: rst})
+                })
+                
             })
 
         }

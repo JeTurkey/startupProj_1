@@ -30,21 +30,32 @@
             <!-- 代码在这 -->
             <div class="row container-fluid">
                 <!-- 趋势图 -->
+                <div class='row'>
                 <div class="col-md-8">
                     <canvas id="chartjs-0"></canvas>
                 </div>
                 <!-- 最新相关新闻 预设5个 -->
-                <div class="col-md-4">
-                    <h3 class="pb-4 mb-4 font-italic border-bottom" style="margin-top: 2%;"> 最新资讯 </h3>
-                    <% docs.forEach(function(item){  %>
-                        <div class="blog-post">
-                            <h4 class="blog-post-title"> <%= item.title %> </h4>
-                            <p class="blog-post-meta"> <%= item.date %> by <a href="#"><%= item.source %></a></p>
-                        </div>
-                        
-                    <% })%>
+                
+                    <div class="col-md-4">
+                        <h5 class="pb-4 mb-4 font-italic border-bottom" style="margin-top: 2%;"> 最新资讯 </h5>
+                        <% docs.forEach(function(item){  %>
+                            <div class="blog-post">
+                                <h6 class="blog-post-title"> <%= item.title %> </h6>
+                                <p class="blog-post-meta"> <%= item.date %> by <a href="#"><%= item.source %></a></p>
+                            </div>
+                        <% })%>
+                    </div>
                 </div>
+
                 <!-- 可以选择是否展示成分，或者细分领域 -->
+
+                <div class="row" style="margin-top: 5%; margin-left: 5%">
+
+                    <% jieshao.forEach(function(item){ %>
+                        <h6><%= item.description %></h4>
+                    <% }) %>
+                                                
+                </div>
 
                 
 
