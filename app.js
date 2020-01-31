@@ -830,6 +830,42 @@ app.get('/blockchainDatabaseBlurSearch', isLoggedIn, function(req, res){
 })
 
 
+// For Fun part
+
+var chatSchema = new mongoose.Schema({
+    context: String
+})
+
+var chatlog = mongoose.model('chat', chatSchema)
+
+app.get('/chattingsystem', isLoggedIn, function(req, res){
+    chatlog.find({}, function(err, rst){
+        if (err) {
+            return err
+        } else {
+            console.log(rst)
+            res.render('chatting', {data: rst})
+        }
+    })
+})
+
+app.post('/submitchatting', isLoggedIn, function(req, res){
+    
+    
+    chatlog.create({context: req.body.usermsg}, function(err, rst){
+        if (err){
+            return err
+        } else {
+            res.redirect('/chattingsystem')
+        }
+    })
+            
+    
+
+    
+})
+
+
 
 
 
