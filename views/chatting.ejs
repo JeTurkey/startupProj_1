@@ -28,16 +28,16 @@
             </nav>
             <div class="col-md-10">
                 <!-- 代码在这 -->
-
-
-                <% data.forEach(function(message){ %>
-                    <p><%= message.context %></p>
-                <% }) %>
-
-                <form action="/submitchatting", method="POST">
+                <form action="/submitchatting", method="POST" style="margin-top: 5%;">
                     <input name="usermsg" type="text" id="usermsg" size="63" />
                     <input name="submitmsg" type="submit"  id="submitmsg" value="Send" />
                 </form>
+                
+                <% for(var i = data.length - 1; i >= 0; i --){ %>
+                    <p> <%= data[i]["context"] %> </p>
+                <% } %>
+
+
         </div>
 </div>
 

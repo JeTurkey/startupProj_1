@@ -1,25 +1,56 @@
-<% include ./partials/header %>
-
-<div class="container-fluid" style="margin-top: 100px;">
-    <div class="row">
-        <div class="col-9">
-            <img src="http://rismedia.com/wp-content/uploads/2017/12/proactive_thinker_665x350_519190164.jpg" style="margin-left: 20%;">
-        </div>
-        <div class="col-2">
-            <form action="/" method="POST">
-                <div class="form-group">
-                    <label for="inputUsername"> Username </label>
+<html>
+    <head>
+        <title> TTD - Analytic Tool & Database Beta </title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        
+    </head>
+    <body class="text-center" style="display: flex; align-items: center; padding-top: 40px; padding-bottom: 40px; background-color: #f5f5f5;">
+        <div class="container">
+            <div class="row" style="widows: 100%; max-width: 330px; padding: 15px; margin: auto">
+                <form method="POST" action="/" class="form-signin" >
+                    <h1> 请登录 </h1>
+                    <label for="inputUsername" class="sr-only"> Username </label>
                     <input type="text" class="form-control" id="inputUsername" name="username" placeholder="Username">
-                </div>    
-                <div class="form-group">
-                    <label for="inputPassword"> Password </label>
+                    <label for="inputPassword" class="sr-only"> Password </label>
                     <input type="password" class="form-control" name="password" id="inputPassword">
+                    <div class="checkbox mb-3">
+                        <label><input type="checkbox" value="remember-me"> 记住信息 (Remember me) </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block"> Login </button>
+        
+                    <p class='mt-5 mb-3 text-muted'> © 2018-2020 </p>
+                </form>
+            </div>
+            <div class="row">
+                <ul class="nav nav-tabs" id="main-page-tab" role="tablist">
+                    <li class="nav-item">
+                        <a href="#update" class="nav-link active" id="update-tab" data-toggle="tab" role="tab" aria-controls="update" aria-selected="true"> 更新 (Update) </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#other" class="nav-link" id="other-tab" data-toggle="tab" role="tab" aria-controls="other" aria-selected="false"> 其他 (Other) </a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="main-page-tab-content">
+                    <div class="tab-pane fade show active" id="update" role="tabpanel" aria-labelledby="update-tab"> 
+                        <ul>
+                            <li><a href="#"> 关于2020年2月27日停服更新公告 </a></li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="other" role="tabpanel" aria-labelledby="other-tab"> 
+                        <ul>
+                            <li><a href="#"> 关于啥也不知道的公告 </a></li>
+                        </ul>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-md"> Login </button>
-            </form>
-        </div>
-        <div class="col-1"></div>
-    </div>
-</div>
+            </div>
 
-<% include ./partials/footer %>
+        </div>
+        
+        
+    
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </body>
+
+</html>

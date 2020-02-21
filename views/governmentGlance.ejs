@@ -48,7 +48,13 @@
                         <h5> xx省 各类招标占比 </h5>
                         <canvas id="bidCountWithinRegion"></canvas>
                     </div>
+                    <div class="col-md-5" style="margin-top: 10%; margin-left: 3%; height: 200px; width: 300px;">
+                        
+                        
+                    </div>
                 </div>
+
+
                 
                 
         </div>
@@ -62,14 +68,14 @@
     var myChart = new Chart(ctx1, {
         type: 'bar',
         data: {
-            labels: ['<%= region[0] %>', '<%= region[1] %>', '<%= region[2] %>', '<%= region[3] %>', '<%= region[4] %>', '<%= region[5] %>',
-                     '<%= region[6] %>', '<%= region[7] %>', '<%= region[8] %>', '<%= region[9] %>', '<%= region[10] %>'],
+            labels: ['<%= countByLocation[0]._id %>', '<%= countByLocation[1]._id %>', '<%= countByLocation[2]._id %>', '<%= countByLocation[3]._id %>', '<%= countByLocation[4]._id %>', '<%= countByLocation[5]._id %>',
+                     '<%= countByLocation[6]._id %>', '<%= countByLocation[7]._id %>', '<%= countByLocation[8]._id %>', '<%= countByLocation[9]._id %>'],
             datasets: [{
                 label: '计数',
 
-                data: [<%= countInRegion[0] %>, <%= countInRegion[1] %>, <%= countInRegion[2] %>, <%= countInRegion[3] %>,
-                       <%= countInRegion[4] %>, <%= countInRegion[5] %>, <%= countInRegion[6] %>, <%= countInRegion[7] %>,
-                       <%= countInRegion[8] %>, <%= countInRegion[9] %>, <%= countInRegion[10] %>],
+                data: [<%= countByLocation[0].count %>, <%= countByLocation[1].count %>, <%= countByLocation[2].count %>, <%= countByLocation[3].count %>,
+                       <%= countByLocation[4].count %>, <%= countByLocation[5].count %>, <%= countByLocation[6].count %>, <%= countByLocation[7].count %>,
+                       <%= countByLocation[8].count %>, <%= countByLocation[9].count %>],
 
                 backgroundColor: 'lightblue'
             }]
@@ -94,14 +100,14 @@
     var myChart = new Chart(ctx2, {
         type: 'bar',
         data: {
-            labels: ['<%= segment[0] %>', '<%= segment[1] %>', '<%= segment[2] %>', '<%= segment[3] %>', '<%= segment[5] %>', '<%= segment[6] %>',
-                     '<%= segment[7] %>', '<%= segment[8] %>', '<%= segment[9] %>', '<%= segment[10] %>', '<%= segment[11] %>'],
+            labels: ['<%= countBySegment[0]._id %>', '<%= countBySegment[1]._id %>', '<%= countBySegment[2]._id %>', '<%= countBySegment[3]._id %>', '<%= countBySegment[4]._id %>', '<%= countBySegment[5]._id %>',
+                     '<%= countBySegment[6]._id %>', '<%= countBySegment[7]._id %>', '<%= countBySegment[8]._id %>', '<%= countBySegment[9]._id %>'],
             datasets: [{
                 label: '计数',
 
-                data: [<%= countInIndustry[0] %>, <%= countInIndustry[1] %>, <%= countInIndustry[2] %>, <%= countInIndustry[3] %>,
-                       <%= countInIndustry[4] %>, <%= countInIndustry[5] %>, <%= countInIndustry[6] %>, <%= countInIndustry[7] %>,
-                       <%= countInIndustry[8] %>, <%= countInIndustry[9] %>, <%= countInIndustry[10] %>],
+                data: [<%= countBySegment[0].count %>, <%= countBySegment[1].count %>, <%= countBySegment[2].count %>, <%= countBySegment[3].count %>,
+                       <%= countBySegment[4].count %>, <%= countBySegment[5].count %>, <%= countBySegment[6].count %>, <%= countBySegment[7].count %>,
+                       <%= countBySegment[8].count %>, <%= countBySegment[9].count %>],
 
                 backgroundColor: '#85C1E9'
             }]

@@ -171,6 +171,18 @@ var tagDescriptionSchema = new mongoose.Schema({
 
 var tagdescription = mongoose.model('tagdescription', tagDescriptionSchema)
 
+var governmentcontractSchema = new mongoose.Schema({
+    title: String,
+    date: String,
+    caigouren: String,
+    dailishang: String,
+    location: String,
+    caigouneirong: String,
+    link: String
+})
+
+var governmentcontract = mongoose.model('governmentcontract', governmentSchema)
+
 
 
 // ====================
@@ -719,47 +731,35 @@ app.get("/governmentDatabaseSearch", isLoggedIn, function(req, res){
 // 政府行业全景图 页面
 
 app.get("/governmentGlance", isLoggedIn, function(req, res){
+    
 
-    government.aggregate(
-        [{ $group: {
-            _id: '$region',
-            count: {$sum: 1}}},
-         {$sort: {count: -1}}]
-    ).exec(function(err, countByRegion){
-        if(err){
-            return err
-        } else {
-            var region = []
-            var countInRegion = []
-            for(var i = 0; i <= 10; i++){
-                region.push(countByRegion[i]._id)
-                countInRegion.push(countByRegion[i].count)
-            }
-            console.log(region)
-            console.log(countInRegion)
+    governmentcontract.aggregate([{ $group: {_id: '$location',
+                                             count: {$sum: 1}}},
+                                            {$sort: {count: -1}}, {$limit: 10}]).exec(
+                                                function(err, countByLocation){
+                                                    if(err){
+                                                        console.log('Error 了')
+                                                        return err
+                                                    } else {
+                                                        
+                                                        governmentcontract.aggregate([{ $group: {_id: '$caigouneirong',
+                                                                                                 count: {$sum: 1}}},
+                                                                                                {$sort: {count: -1}}, {$limit: 10}]).exec(
+                                                                                                    function(err, countBySegment){
+                                                                                                        if(err){
+                                                                                                            return err
+                                                                                                        } else {
+                                                                                                            
+                                                                                                            res.render('governmentGlance', {countByLocation: countByLocation, countBySegment: countBySegment})
+                                                                                                        }
+                                                                                                    }
+                                                                                                )
+                                                    }
 
-            government.aggregate([{$group:{
-                _id: '$industry',
-                count: {$sum :1}
-            }}, {$sort: {count: -1}}]).exec(function(err2, countByIndustry){
-                if(err2){
-                    return err2
-                } else  {
-                    var countInIndustry = []
-                    var segment = []
-                    for (var i = 0; i <= 10; i++){
-                        countInIndustry.push(countByIndustry[i].count)
-                        segment.push(countByIndustry[i]._id)
-                    }
-                    console.log(segment)
-                    console.log(countInIndustry)
-                    res.render("governmentGlance", {region: region, countInRegion: countInRegion, segment: segment, countInIndustry: countInIndustry})
-                }
-            })
-
-            
-        }
-    })
+                                                }
+                                            )
+    
+    
     
 })
 
@@ -830,40 +830,7 @@ app.get('/blockchainDatabaseBlurSearch', isLoggedIn, function(req, res){
 })
 
 
-// For Fun part
 
-var chatSchema = new mongoose.Schema({
-    context: String
-})
-
-var chatlog = mongoose.model('chat', chatSchema)
-
-app.get('/chattingsystem', isLoggedIn, function(req, res){
-    chatlog.find({}, function(err, rst){
-        if (err) {
-            return err
-        } else {
-            console.log(rst)
-            res.render('chatting', {data: rst})
-        }
-    })
-})
-
-app.post('/submitchatting', isLoggedIn, function(req, res){
-    
-    
-    chatlog.create({context: req.body.usermsg}, function(err, rst){
-        if (err){
-            return err
-        } else {
-            res.redirect('/chattingsystem')
-        }
-    })
-            
-    
-
-    
-})
 
 
 
