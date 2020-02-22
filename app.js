@@ -13,6 +13,8 @@ var express               = require("express"),
     Promise               = require("bluebird"),
     requestPromise        = require("request-promise"),
     request               = require("request");
+    governmentcontract    = require('./models/governmentContractDB')
+    updateLog             = require('./models/updateLogDB')
 
 
 
@@ -171,17 +173,17 @@ var tagDescriptionSchema = new mongoose.Schema({
 
 var tagdescription = mongoose.model('tagdescription', tagDescriptionSchema)
 
-var governmentcontractSchema = new mongoose.Schema({
-    title: String,
-    date: String,
-    caigouren: String,
-    dailishang: String,
-    location: String,
-    caigouneirong: String,
-    link: String
-})
+// var governmentcontractSchema = new mongoose.Schema({
+//     title: String,
+//     date: String,
+//     caigouren: String,
+//     dailishang: String,
+//     location: String,
+//     caigouneirong: String,
+//     link: String
+// })
 
-var governmentcontract = mongoose.model('governmentcontract', governmentSchema)
+// var governmentcontract = mongoose.model('governmentcontract', governmentcontractSchema)
 
 
 
@@ -189,11 +191,7 @@ var governmentcontract = mongoose.model('governmentcontract', governmentSchema)
 //     Pre-defined
 // ====================
 
-var updateLog=[
-    {version: "beta 0.1", date: "2019-07-07", description: "Making sure all pages are working correctly"},
-    {version: "beta 0.2", date: "2019-07-30", description: "行业数据库搭建完成，可以增加行业信息。 行业数据界面已经接通，行业情绪指数的新闻接口已经开放。首页接入新浪财经API。"},
-    {version: "beta 0.3", date: "2019-08-14", description: "情绪指数接口打通"}
-]
+
 
 
 
@@ -205,7 +203,10 @@ var updateLog=[
 // GET Login ---- HomePage
 
 app.get("/", function(req, res){
-    res.render("index");
+    updateLog.find({}, {'title': 1}).limit(10).exec(function(err, rst){
+        console.log(rst)
+        res.render('index', {data: rst})
+    })
 })
 
 // POST Login ---- HomePage
@@ -827,6 +828,28 @@ app.get('/blockchainDatabaseBlurSearch', isLoggedIn, function(req, res){
     })
 
     
+})
+
+app.get('/newUpdate', isLoggedIn, function(req, res){
+    res.render('newUpdate')
+})
+
+app.post('/newUpdatePost', isLoggedIn, function(req, res){
+    updateLog.create({
+        title: req.body.updateTitle,
+        editor: req.body.updateEditor,
+        date: req.body.updateDate,
+        content: req.body.updateConent
+    }, function(err, rst){
+        if (err){
+            return err
+        } else {
+            console.log('update saved ')
+            res.redirect('usrHome')
+        }
+    })
+    
+
 })
 
 
