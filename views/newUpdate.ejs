@@ -30,7 +30,9 @@
                 <!-- 代码在这 -->
                 <div class="row" style="margin: auto; width: 100%; padding: 15px; text-align: center;">
                     <p class="lead"> 改表单仅有管理员可见，表单内所有内容都将会在首页被显示。更新基本上是在周末时间段里，多次进行短暂停服更新 </p>
-
+                    <% if(currentUser.username == 'admin'){ %>
+                        
+                    
                     <form action="/newUpdatePost" method="POST" style="margin: auto; width: 100%; padding: 15px; text-align: center;">
                         <div class="form-row">
                             <div class="form-group col-md-12">
@@ -56,6 +58,7 @@
                         </div>
                         <button type="submit" class="btn btn-primary btn-lg btn-block"> submit </button>
                     </form>
+                    <% } %>
                 </div>
             </main>
         </div>
