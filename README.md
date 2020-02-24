@@ -80,7 +80,7 @@ Check if the installation was sucessed by `node -v` and `npm -v`
 
 `pip3 install beautifulsoup4`
 
-`pip3 install pymong`
+`pip3 install pymongo`
 
 ##### The lsb_release problem
 
