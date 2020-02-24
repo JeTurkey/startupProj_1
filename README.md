@@ -4,13 +4,11 @@ Don't forget to switch the localhost in /etc/hosts file, by `sudo vi /etc/hosts`
 
 ## Step 1. Install NPM and Node.js
 
-`sudo apt-get update`
+`sudo apt update`
 
-`sudo apt-get install nodejs`
+`curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -` (Make sure you have `curl` installed)
 
-`sudo apt-get install nodejs legacy`
-
-`sudo apt-get install npm`
+`sudo apt-get install -y nodejs`
 
 Check if the installation was sucessed by `node -v` and `npm -v`
 
@@ -83,6 +81,12 @@ Check if the installation was sucessed by `node -v` and `npm -v`
 `pip3 install beautifulsoup4`
 
 `pip3 install pymong`
+
+##### The lsb_release problem
+
+###### Option 1. You may rename the `lsb_release` to temprorary solve the questions, but might cause more trouble in the future if you wanna do something else.
+
+###### Option 2. Change the first line of `lsb_release` file to `python3.5` will solve the problem.
 
 ## Step 6. Install Screen
 
