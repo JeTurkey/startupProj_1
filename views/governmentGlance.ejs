@@ -31,12 +31,12 @@
                 <div class="row">
                 <!-- 按照省区分数量 -->
                     <div class="col-md-5" style="margin-top: 5%; margin-left: 3%; height: 200px; width: 300px;">
-                        <h5> xxx年 - xxx年 各省项目统计数量 </h5>
+                        <h5> 2020年 全国招标成交统计数量 Top 10 </h5>
                         <canvas id='bidCountByProvince1'></canvas>
                     </div>
 
                     <div class="col-md-5" style="margin-top: 5%; margin-left: 10%; height: 200px; width: 300px;">
-                            <h5> xxx年 - xxx年 项目类型统计 </h5>
+                            <h5> 2020年 全国招标成交类型统计 Top 10 </h5>
                             <canvas id='bidCountByProvince2'></canvas>
                     </div>
                 </div>
@@ -45,17 +45,20 @@
 
                 <div class="row">
                     <div class="col-md-5" style="margin-top: 10%; margin-left: 3%; height: 200px; width: 300px;">
-                        <h5> xx省 各类招标占比 </h5>
+                        <h5> 各类招标占比 </h5>
                         <canvas id="bidCountWithinRegion"></canvas>
                     </div>
                     <div class="col-md-5" style="margin-top: 10%; margin-left: 3%; height: 200px; width: 300px;">
-                        
-                        
+                        <h5> 近30天每日新增招标成交统计 </h5>
+                        <canvas id='bidCountByDate'></canvas>
                     </div>
                 </div>
 
 
-                
+                <div class="row">
+                    
+                    
+                </div>
                 
         </div>
 </div>
@@ -68,14 +71,11 @@
     var myChart = new Chart(ctx1, {
         type: 'bar',
         data: {
-            labels: ['<%= countByLocation[0]._id %>', '<%= countByLocation[1]._id %>', '<%= countByLocation[2]._id %>', '<%= countByLocation[3]._id %>', '<%= countByLocation[4]._id %>', '<%= countByLocation[5]._id %>',
-                     '<%= countByLocation[6]._id %>', '<%= countByLocation[7]._id %>', '<%= countByLocation[8]._id %>', '<%= countByLocation[9]._id %>'],
+            labels: [<% countByLocation.forEach(function(log){%> "<%= log._id %>", <%}) %>],
             datasets: [{
                 label: '计数',
 
-                data: [<%= countByLocation[0].count %>, <%= countByLocation[1].count %>, <%= countByLocation[2].count %>, <%= countByLocation[3].count %>,
-                       <%= countByLocation[4].count %>, <%= countByLocation[5].count %>, <%= countByLocation[6].count %>, <%= countByLocation[7].count %>,
-                       <%= countByLocation[8].count %>, <%= countByLocation[9].count %>],
+                data: [<% countByLocation.forEach(function(log){%> "<%= log.count %>", <%}) %>],
 
                 backgroundColor: 'lightblue'
             }]
@@ -100,6 +100,18 @@
     var myChart = new Chart(ctx2, {
         type: 'bar',
         data: {
+            <% if(countBySegment[0]._id == "未知"){ %>
+
+            labels: ['<%= countBySegment[1]._id %>', '<%= countBySegment[2]._id %>', '<%= countBySegment[3]._id %>', '<%= countBySegment[4]._id %>', '<%= countBySegment[5]._id %>', '<%= countBySegment[6]._id %>',
+                     '<%= countBySegment[7]._id %>', '<%= countBySegment[8]._id %>', '<%= countBySegment[9]._id %>', '<%= countBySegment[10]._id %>'],
+            datasets: [{
+                label: '计数',
+
+                data: [<%= countBySegment[1].count %>, <%= countBySegment[2].count %>, <%= countBySegment[3].count %>, <%= countBySegment[4].count %>,
+                       <%= countBySegment[5].count %>, <%= countBySegment[6].count %>, <%= countBySegment[7].count %>, <%= countBySegment[8].count %>,
+                       <%= countBySegment[9].count %>, <%= countBySegment[10].count %>],
+            <% }else{ %>
+            
             labels: ['<%= countBySegment[0]._id %>', '<%= countBySegment[1]._id %>', '<%= countBySegment[2]._id %>', '<%= countBySegment[3]._id %>', '<%= countBySegment[4]._id %>', '<%= countBySegment[5]._id %>',
                      '<%= countBySegment[6]._id %>', '<%= countBySegment[7]._id %>', '<%= countBySegment[8]._id %>', '<%= countBySegment[9]._id %>'],
             datasets: [{
@@ -108,7 +120,7 @@
                 data: [<%= countBySegment[0].count %>, <%= countBySegment[1].count %>, <%= countBySegment[2].count %>, <%= countBySegment[3].count %>,
                        <%= countBySegment[4].count %>, <%= countBySegment[5].count %>, <%= countBySegment[6].count %>, <%= countBySegment[7].count %>,
                        <%= countBySegment[8].count %>, <%= countBySegment[9].count %>],
-
+                <% } %>
                 backgroundColor: '#85C1E9'
             }]
         },
@@ -140,6 +152,34 @@
         },
         options: {
 
+        }
+    })
+    
+    // 按照省区分数量
+    var ctx4 = document.getElementById('bidCountByDate').getContext('2d')
+    
+    var myChart = new Chart(ctx4, {
+        type: 'line',
+        data: {
+            labels: [<% countByDate.forEach(function(log){%> "<%= log._id %>", <%}) %>],
+            datasets: [{
+                label: '计数',
+                data: [<% countByDate.forEach(function(log){%> <%= log.count %>, <%}) %>],
+
+                backgroundColor: 'lightblue'
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    },
+                    gridLines: {
+                        offsetGridLines: true
+                    }
+                }]
+            }
         }
     })
 

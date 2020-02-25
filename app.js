@@ -203,7 +203,7 @@ var tagdescription = mongoose.model('tagdescription', tagDescriptionSchema)
 // GET Login ---- HomePage
 
 app.get("/", function(req, res){
-    updateLog.find({}, {'title': 1}).limit(10).exec(function(err, rst){
+    updateLog.find({}, {'title': 1}).sort({_id: -1}).limit(6).exec(function(err, rst){
         console.log(rst)
         res.render('index', {data: rst})
     })
@@ -731,37 +731,80 @@ app.get("/governmentDatabaseSearch", isLoggedIn, function(req, res){
 
 // 政府行业全景图 页面
 
-app.get("/governmentGlance", isLoggedIn, function(req, res){
-    
+app.get("/governmentGlance", isLoggedIn, function (req, res) {
 
-    governmentcontract.aggregate([{ $group: {_id: '$location',
-                                             count: {$sum: 1}}},
-                                            {$sort: {count: -1}}, {$limit: 10}]).exec(
-                                                function(err, countByLocation){
-                                                    if(err){
-                                                        console.log('Error 了')
-                                                        return err
-                                                    } else {
-                                                        
-                                                        governmentcontract.aggregate([{ $group: {_id: '$caigouneirong',
-                                                                                                 count: {$sum: 1}}},
-                                                                                                {$sort: {count: -1}}, {$limit: 10}]).exec(
-                                                                                                    function(err, countBySegment){
-                                                                                                        if(err){
-                                                                                                            return err
-                                                                                                        } else {
-                                                                                                            
-                                                                                                            res.render('governmentGlance', {countByLocation: countByLocation, countBySegment: countBySegment})
-                                                                                                        }
-                                                                                                    }
-                                                                                                )
-                                                    }
 
-                                                }
-                                            )
-    
-    
-    
+    governmentcontract.aggregate([{
+            $group: {
+                _id: '$location',
+                count: {
+                    $sum: 1
+                }
+            }
+        },
+        {
+            $sort: {
+                count: -1
+            }
+        }, {
+            $limit: 10
+        }
+    ]).exec(
+        function (err, countByLocation) {
+            if (err) {
+                console.log('Error 了')
+                return err
+            } else {
+
+                governmentcontract.aggregate([{
+                        $group: {
+                            _id: '$caigouneirong',
+                            count: {
+                                $sum: 1
+                            }
+                        }
+                    },
+                    {
+                        $sort: {
+                            count: -1
+                        }
+                    }, {
+                        $limit: 11
+                    }
+                ]).exec(
+                    function (err, countBySegment) {
+                        if (err) {
+                            return err
+                        } else {
+                            governmentcontract.aggregate([{
+                                $group: {
+                                    _id: '$date',
+                                    count: {
+                                        $sum: 1
+                                    }
+                                }
+                            }, {
+                                $sort: {
+                                    _id: 1
+                                }
+                            }, {$limit: 30}
+                        ], function (err, countByDate) {
+                                res.render('governmentGlance', {
+                                    countByLocation: countByLocation,
+                                    countBySegment: countBySegment,
+                                    countByDate: countByDate
+                                })
+                            })
+                        }
+                    }
+                )
+            }
+
+        }
+    )
+
+
+
 })
 
 app.get("/governmentDatabaseBlurSearch", isLoggedIn, function(req, res){
@@ -827,7 +870,7 @@ app.get('/blockchainDatabaseBlurSearch', isLoggedIn, function(req, res){
         }
     })
 
-    
+   
 })
 
 app.get('/newUpdate', isLoggedIn, function(req, res){
@@ -848,7 +891,9 @@ app.post('/newUpdatePost', isLoggedIn, function(req, res){
             res.redirect('usrHome')
         }
     })
-    
+})
+
+app.get('/generalNews/:id', isLoggedIn, function(req, res){
 
 })
 

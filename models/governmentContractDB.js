@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var governmentContractSchema = new mongoose.Schema({
     title: String,
-    date: String,
+    date: Date,
     caigouren: String,
     dailishang: String,
     location: String,
