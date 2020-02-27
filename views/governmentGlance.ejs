@@ -56,7 +56,10 @@
 
 
                 <div class="row">
-                    
+                    <div class="col-md-5" style="margin-top: 10%; margin-left: 3%; height: 200px; width: 300px;">
+                        <h5> 近30天 医疗设备类招标成交统计  </h5>
+                        <canvas id='bidCountInMedEquipment'></canvas>
+                    </div>
                     
                 </div>
                 
@@ -155,7 +158,7 @@
         }
     })
     
-    // 按照省区分数量
+    // 按照日期区分
     var ctx4 = document.getElementById('bidCountByDate').getContext('2d')
     
     var myChart = new Chart(ctx4, {
@@ -165,6 +168,34 @@
             datasets: [{
                 label: '计数',
                 data: [<% countByDate.forEach(function(log){%> <%= log.count %>, <%}) %>],
+
+                backgroundColor: 'lightblue'
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    },
+                    gridLines: {
+                        offsetGridLines: true
+                    }
+                }]
+            }
+        }
+    })
+
+    // 近30天 医疗类中标成交统计
+    var ctx5 = document.getElementById('bidCountInMedEquipment').getContext('2d')
+    
+    var myChart = new Chart(ctx5, {
+        type: 'line',
+        data: {
+            labels: [<% countInMedEquip.forEach(function(log){%> "<%= log._id %>", <%}) %>],
+            datasets: [{
+                label: '计数',
+                data: [<% countInMedEquip.forEach(function(log){%> <%= log.count %>, <%}) %>],
 
                 backgroundColor: 'lightblue'
             }]

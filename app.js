@@ -12,9 +12,10 @@ var express               = require("express"),
     passportLocalMongoose = require("passport-local-mongoose"),
     Promise               = require("bluebird"),
     requestPromise        = require("request-promise"),
-    request               = require("request");
-    governmentcontract    = require('./models/governmentContractDB')
-    updateLog             = require('./models/updateLogDB')
+    request               = require("request")
+    governmentcontract    = require("./models/governmentContractDB")
+    updateLog             = require("./models/updateLogDB")
+    blockchaincompany     = require("./models/blockchainCompanyDB")
 
 
 
@@ -154,17 +155,17 @@ var governmentSchema = new mongoose.Schema({
 
 var government = mongoose.model('government', governmentSchema)
 
-var blockchainCompanySchema = new mongoose.Schema({
-    companyCode: String,
-    companyName: String,
-    segment: String,
-    newestFinance: String,
-    serviceType: String,
-    yearFounded: Date,
-    region: String
-})
+// var blockchainCompanySchema = new mongoose.Schema({
+//     companyCode: String,
+//     companyName: String,
+//     segment: String,
+//     newestFinance: String,
+//     serviceType: String,
+//     yearFounded: Date,
+//     region: String
+// })
 
-var blockchaincompany = mongoose.model('blockchaincompany', blockchainCompanySchema)
+// var blockchaincompany = mongoose.model('blockchaincompany', blockchainCompanySchema)
 
 var tagDescriptionSchema = new mongoose.Schema({
     tag: String,
@@ -173,17 +174,6 @@ var tagDescriptionSchema = new mongoose.Schema({
 
 var tagdescription = mongoose.model('tagdescription', tagDescriptionSchema)
 
-// var governmentcontractSchema = new mongoose.Schema({
-//     title: String,
-//     date: String,
-//     caigouren: String,
-//     dailishang: String,
-//     location: String,
-//     caigouneirong: String,
-//     link: String
-// })
-
-// var governmentcontract = mongoose.model('governmentcontract', governmentcontractSchema)
 
 
 
@@ -789,11 +779,15 @@ app.get("/governmentGlance", isLoggedIn, function (req, res) {
                                 }
                             }, {$limit: 30}
                         ], function (err, countByDate) {
+                            governmentcontract.aggregate([{ $match: {title: {$regex: "医疗"}}},{ $group: {_id: "$date", count: {$sum: 1}}}, {$sort: {"_id": 1}}], function(err, countInMedEquip){
                                 res.render('governmentGlance', {
                                     countByLocation: countByLocation,
                                     countBySegment: countBySegment,
-                                    countByDate: countByDate
+                                    countByDate: countByDate,
+                                    countInMedEquip: countInMedEquip
                                 })
+                            })
+                                
                             })
                         }
                     }
