@@ -1,0 +1,65 @@
+<% include ./partials/headerLoggin %>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky" style="margin-top: 5%;">
+                    <ul class="list-group">
+                            <a class="list-group-item list-group-item-action" href="/usrHome" style="margin-top: 5%;"> 首页 </a>                     
+    
+                            <a href="#homeSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action active" style="margin-top: 5%;"> 行业全景图 </a>
+                            <ul class="collapse" id="homeSubmenu1" style="margin-top: 5%">
+                                <a class="list-group-item list-group-item-action active" href="/governmentGlance"> 政府行业 </a>
+                                <a class="list-group-item list-group-item-action" href="/industry" style="margin-top: 5%"> 区块链 </a>
+                            </ul>
+                            <a href="#homeSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action" style="margin-top: 5%;"> 行业数据库 </a>
+                            <ul class="collapse" id="homeSubmenu2">
+                                <a class="list-group-item list-group-item-action" href="/governmentSearch" style="margin-top: 5%;"> 政府行业 </a>
+                                <a class="list-group-item list-group-item-action" href="/database" style="margin-top: 5%;"> 区块链 </a>
+                            </ul>
+                            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action" style="margin-top: 5%;"> 行业情绪指数 </a>
+                            <ul class="collapse" id="homeSubmenu">
+                                <a class="list-group-item list-group-item-action" href="/industryEmotion" style="margin-top: 5%;"> 全行业/关键词情绪指数 </a>
+                                <a class="list-group-item list-group-item-action" href="/news" style="margin-top: 5%;"> 行业情绪指数参考新闻 </a>
+                            </ul>
+                            <a class="list-group-item list-group-item-action" href="/updateLog" style="margin-top: 5%;"> 更新记录 </a>
+                            <a class="list-group-item list-group-item-action" href="/chinaProvincialGraph" style="margin-top: 5%;"> 省会画像 </a>
+                    </ul>
+            </div>
+        </nav>
+            <div class="col-md-10">
+                <!-- 代码在这 -->
+                <h3> 各省政府采购画像 </h3>
+                <!-- 一行5个省 -->
+                <div class="row">
+                    <div class="card" style="width: 18rem; margin-left: 2%; margin-top: 2%;">
+                        <div class="card-body">
+                            <h5 class="card-title">北京</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">也许会显示平均月招标</h6>
+                            <p class="card-text"> 这里写啥还没想好 </p>
+                            <a href="#" class="card-link"> 详细 </a>
+                        </div>
+                    </div>
+                    <div class="card" style="width: 18rem; margin-left: 2%; margin-top: 2%;">
+                        <div class="card-body">
+                            <h5 class="card-title">上海</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">也许会显示平均月招标</h6>
+                            <p class="card-text"> 这里写啥还没想好 </p>
+                            <a href="#" class="card-link"> 详细 </a>
+                        </div>
+                    </div>
+                    <div class="card" style="width: 18rem; margin-left: 2%; margin-top: 2%;">
+                        <div class="card-body">
+                            <h5 class="card-title">广州</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">也许会显示平均月招标</h6>
+                            <p class="card-text"> 这里写啥还没想好 </p>
+                            <a href="#" class="card-link"> 详细 </a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+</div>
+
+<% include ./partials/footer %>

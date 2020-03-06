@@ -164,10 +164,10 @@
     var myChart = new Chart(ctx4, {
         type: 'line',
         data: {
-            labels: [<% countByDate.forEach(function(log){%> "<%= log._id %>", <%}) %>],
+            labels: [<% countByDate.forEach(function(log){%> "<%= log._id %>", <%}) %>].reverse(),
             datasets: [{
                 label: '计数',
-                data: [<% countByDate.forEach(function(log){%> <%= log.count %>, <%}) %>],
+                data: [<% countByDate.forEach(function(log){%> <%= log.count %>, <%}) %>].reverse(),
 
                 backgroundColor: 'lightblue'
             }]
@@ -192,10 +192,10 @@
     var myChart = new Chart(ctx5, {
         type: 'line',
         data: {
-            labels: [<% countInMedEquip.forEach(function(log){%> "<%= log._id %>", <%}) %>],
+            labels: [<% countInMedEquip.forEach(function(log){%> "<%= log._id %>", <%}) %>].reverse(),
             datasets: [{
                 label: '计数',
-                data: [<% countInMedEquip.forEach(function(log){%> <%= log.count %>, <%}) %>],
+                data: [<% countInMedEquip.forEach(function(log){%> <%= log.count %>, <%}) %>].reverse(),
 
                 backgroundColor: 'lightblue'
             }]

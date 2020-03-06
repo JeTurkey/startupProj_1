@@ -775,11 +775,11 @@ app.get("/governmentGlance", isLoggedIn, function (req, res) {
                                 }
                             }, {
                                 $sort: {
-                                    _id: 1
+                                    _id: -1
                                 }
                             }, {$limit: 30}
                         ], function (err, countByDate) {
-                            governmentcontract.aggregate([{ $match: {title: {$regex: "医疗"}}},{ $group: {_id: "$date", count: {$sum: 1}}}, {$sort: {"_id": 1}}], function(err, countInMedEquip){
+                            governmentcontract.aggregate([{ $match: {title: {$regex: "医疗"}}},{ $group: {_id: "$date", count: {$sum: 1}}}, {$sort: {"_id": -1}}, {$limit: 30}], function(err, countInMedEquip){
                                 res.render('governmentGlance', {
                                     countByLocation: countByLocation,
                                     countBySegment: countBySegment,
@@ -889,6 +889,10 @@ app.post('/newUpdatePost', isLoggedIn, function(req, res){
 
 app.get('/generalNews/:id', isLoggedIn, function(req, res){
 
+})
+
+app.get('/chinaProvincialGraph', isLoggedIn, function(req, res){
+    res.render('chinaProvinceGraph')
 })
 
 
