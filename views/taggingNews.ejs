@@ -1,0 +1,60 @@
+<% include ./partials/headerLoggin %>
+
+<div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky" style="margin-top: 5%;">
+                        <ul class="list-group">
+                                <a class="list-group-item list-group-item-action active" href="/usrHome" style="margin-top: 5%;"> 首页 </a>                     
+        
+                                <a href="#homeSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action" style="margin-top: 5%;"> 行业全景图 </a>
+                                <ul class="collapse" id="homeSubmenu1">
+                                    <a class="list-group-item list-group-item-action" href="/governmentGlance"> 政府行业 </a>
+                                    <a class="list-group-item list-group-item-action" href="/industry"> 区块链 </a>
+                                </ul>
+                                <a href="#homeSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action" style="margin-top: 5%;"> 行业数据库 </a>
+                                <ul class="collapse" id="homeSubmenu2">
+                                    <a class="list-group-item list-group-item-action" href="/governmentSearch"> 政府行业 </a>
+                                    <a class="list-group-item list-group-item-action active" href="/database"> 区块链 </a>
+                                </ul>
+                                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action" style="margin-top: 5%;"> 行业情绪指数 </a>
+                                <ul class="collapse" id="homeSubmenu">
+                                    <a class="list-group-item list-group-item-action" href="/industryEmotion"> 全行业/关键词情绪指数 </a>
+                                    <a class="list-group-item list-group-item-action" href="/news"> 行业情绪指数参考新闻 </a>
+                                </ul>
+                                <a class="list-group-item list-group-item-action" href="/updateLog" style="margin-top: 5%;"> 更新记录 </a>
+                        </ul>
+                </div>
+            </nav>
+            <div class="main-panel col-md-8">
+                <!-- 代码在这 -->
+
+                <!-- 主要用于标记数据 -->
+                
+                <div><%= data[0].title %></div>
+                
+                <div><%= data[0].dateAdded %></div>
+
+                <div><%= data[0].source %></div>
+
+                <div id='paragraph'></div>
+                
+
+
+            </div>
+            <div class="col-md-2">
+                
+            </div>
+        </div>
+</div>
+<script>
+    var s = "<%= data[0].content %>";
+    // $('#paragraph').last().after('<div><p>是不是傻逼</p></div>')
+    // var htmlObject = document.createElement('div');
+    // htmlObject.innerHTML = s;
+    // document.getElementById('paragraph').innerHTML = "<html>" + s + "</html>"
+    let doc = new DOMParser().parseFromString(s, 'text/html')
+    document.getElementById('paragraph').innerHTML = doc.body.childNodes[0].textContent
+</script>
+
+<% include ./partials/footer %>

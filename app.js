@@ -16,6 +16,7 @@ var express               = require("express"),
     governmentcontract    = require("./models/governmentContractDB")
     updateLog             = require("./models/updateLogDB")
     blockchaincompany     = require("./models/blockchainCompanyDB")
+    xinwen                = require("./models/xinwenDB")
 
 
 
@@ -95,52 +96,54 @@ var teamSchema = new mongoose.Schema({
 
 var team = mongoose.model("team", teamSchema)
 
-var companyNewsSchema = new mongoose.Schema({
-    newsTitle: String,
-    newsSource: String,
-    newsDate: String,
-    newsContent: String
-})
+// var companyNewsSchema = new mongoose.Schema({
+//     newsTitle: String,
+//     newsSource: String,
+//     newsDate: String,
+//     newsContent: String
+// })
 
-var companyNews = mongoose.model("news", companyNewsSchema)
+// var companyNews = mongoose.model("news", companyNewsSchema)
 
 
-var companySchema = new mongoose.Schema({
-    industry: String,
-    name: String,
-    field: String,
-    location: String,
-    createdYear: Date,
-    description: String,
-    fullname: String,
-    population: String,
-    productDetail: [productSchema],
-    finance: [financeSchema],
-    team: [teamSchema],
-    news: [companyNewsSchema]
-})
+// var companySchema = new mongoose.Schema({
+//     industry: String,
+//     name: String,
+//     field: String,
+//     location: String,
+//     createdYear: Date,
+//     description: String,
+//     fullname: String,
+//     population: String,
+//     productDetail: [productSchema],
+//     finance: [financeSchema],
+//     team: [teamSchema],
+//     news: [companyNewsSchema]
+// })
 
-var newsSchema = new mongoose.Schema({
-    source: String,
-    title: String,
-    date: Date,
-    content: String,
-    tags: Array,
-    originalLink: String
-})
+// var newsSchema = new mongoose.Schema({
+//     source: String,
+//     title: String,
+//     date: Date,
+//     content: String,
+//     tags: Array,
+//     originalLink: String
+// })
 
-var sentenceSchema = new mongoose.Schema({
-    reference: ObjectId,
-    sentence: String,
-    subject: String,
-    object: String,
-    score: Number
+// var sentenceSchema = new mongoose.Schema({
+//     reference: ObjectId,
+//     sentence: String,
+//     subject: String,
+//     object: String,
+//     score: Number
     
-})
+// })
 
-var company = mongoose.model("Company", companySchema)
-var news = mongoose.model("new", newsSchema)
-var sentence = mongoose.model("sentence", sentenceSchema)
+
+
+// var company = mongoose.model("Company", companySchema)
+// // var news = mongoose.model("new", newsSchema)
+// var sentence = mongoose.model("sentence", sentenceSchema)
 
 var governmentSchema = new mongoose.Schema({
     projectPublicName: String,
@@ -887,13 +890,34 @@ app.post('/newUpdatePost', isLoggedIn, function(req, res){
     })
 })
 
-app.get('/generalNews/:id', isLoggedIn, function(req, res){
+app.get('/generalNews', isLoggedIn, function(req, res){
+    xinwen.find({}, function(err, rst){
+        if(err){
+            return err
+        } else {
+            res.render('generalNews', {data: rst})
+        }
+    })
+    
+})
 
+app.get('/generalNews/:id', isLoggedIn, function(req, res){
+    xinwen.find({_id: req.params.id}, function(err, rst){
+        if (err){
+            return err
+        } else {
+            res.render('taggingNews', {data: rst})
+        }
+    })
 })
 
 app.get('/chinaProvincialGraph', isLoggedIn, function(req, res){
     res.render('chinaProvinceGraph')
 })
+
+
+
+
 
 
 
