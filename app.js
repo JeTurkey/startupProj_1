@@ -196,10 +196,11 @@ var tagdescription = mongoose.model('tagdescription', tagDescriptionSchema)
 // GET Login ---- HomePage
 
 app.get("/", function(req, res){
-    updateLog.find({}, {'title': 1}).sort({_id: -1}).limit(6).exec(function(err, rst){
-        console.log(rst)
-        res.render('index', {data: rst})
-    })
+    // updateLog.find({}, {'title': 1}).sort({_id: -1}).limit(6).exec(function(err, rst){
+    //     console.log(rst)
+    //     res.render('index', {data: rst})
+    // })
+    res.render('index')
 })
 
 // POST Login ---- HomePage
@@ -287,9 +288,48 @@ app.get("/news", isLoggedIn, function(req, res){
 
 
 // GET news page
-app.get("/news/new", isLoggedIn, function(req, res){
+app.get("/addingNews", isLoggedIn, function(req, res){
     res.render("addNews")
 })
+
+// POST news page
+app.post("/addingNews/addingNewsPost", isLoggedIn, function(req, res){
+    var newsTitle = req.body.title;
+    var newsDate = req.body.date;
+    var newsSource = req.body.source;
+    var newsContent = req.body.content;
+    var newsSubmitter = req.body.submitter;
+
+    xinwen.create({
+        title: newsTitle,
+        dateAdded: newsDate,
+        source: newsSource,
+        content: newsContent
+    }, function(err, rst){
+        if (err){
+            return err
+        }else{
+            console.log('News has been successfully saved')
+            updateLog.create({
+                title: "添加新闻操作",
+                date: newsDate,
+                editor: res.locals.currentUser.username,
+                content: res.locals.currentUser.username + " 添加了 " + newsTitle
+
+            }, function(err2, rst2){
+                if(err2){
+                    return err2
+                }else{
+                    console.log('log has been added')
+                    res.redirect("/usrHome")
+                }
+            })
+        }
+
+    })
+
+})
+
 
 // // POST news Page
 // app.post("/news/new", isLoggedIn, function(req, res){
@@ -420,7 +460,11 @@ app.get("/database", isLoggedIn, function(req, res){
 // GET updateLog
 
 app.get("/updateLog", isLoggedIn, function(req, res){
-    res.render("updateLog", {updateLog: updateLog})
+    updateLog.find({}).sort({_id: -1}).limit(6).exec(function(err, rst){
+        console.log(rst)
+        res.render("updateLog", {updateLog: rst})
+    })
+    
 })
 
 // GET industry page

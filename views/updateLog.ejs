@@ -5,24 +5,32 @@
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
                 <div class="sidebar-sticky" style="margin-top: 5%;">
                     <ul class="list-group">
-                        <a class="list-group-item list-group-item-action" href="/usrHome" style="margin-top: 5%;"> 首页 </a>                     
-
-                        <a href="#homeSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action" style="margin-top: 5%;"> 行业全景图 </a>
-                        <ul class="collapse" id="homeSubmenu1" style="margin-top: 5%">
+                        <<a class="list-group-item list-group-item-action active" href="/usrHome" style="margin-top: 5%;"> 首页 </a>                     
+        
+                        <a href="#homeSubmenu1" data-target="#homeSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action" style="margin-top: 5%;"> 行业全景图 </a>
+                        <ul class="collapse" id="homeSubmenu1">
                             <a class="list-group-item list-group-item-action" href="/governmentGlance"> 政府行业 </a>
-                            <a class="list-group-item list-group-item-action" href="/industry" style="margin-top: 5%"> 区块链 </a>
+                            <a class="list-group-item list-group-item-action" href="/industry"> 区块链 </a>
                         </ul>
-                        <a href="#homeSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action" style="margin-top: 5%;"> 行业数据库 </a>
+                        
+                        <a href="#homeSubmenu2" data-target="#homeSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action" style="margin-top: 5%;"> 行业数据库 </a>
                         <ul class="collapse" id="homeSubmenu2">
                             <a class="list-group-item list-group-item-action" href="/governmentSearch"> 政府行业 </a>
                             <a class="list-group-item list-group-item-action" href="/database"> 区块链 </a>
                         </ul>
-                        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action" style="margin-top: 5%;"> 行业情绪指数 </a>
-                        <ul class="collapse" id="homeSubmenu">
+                        
+                        <a href="#homeSubmenu3" data-target="#homeSubmenu3" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action" style="margin-top: 5%;"> 行业情绪指数 </a>
+                        <ul class="collapse" id="homeSubmenu3">
                             <a class="list-group-item list-group-item-action" href="/industryEmotion"> 全行业/关键词情绪指数 </a>
                             <a class="list-group-item list-group-item-action" href="/news"> 行业情绪指数参考新闻 </a>
                         </ul>
-                        <a class="list-group-item list-group-item-action active" href="/updateLog" style="margin-top: 5%;"> 更新记录 </a>
+    
+                        <a href="#homeSubmenu4" data-target="#homeSubmenu4" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action" style="margin-top: 5%;"> 管理员操作 </a>
+                        <ul class="collapse" id="homeSubmenu4">
+                            <a class="list-group-item list-group-item-action" href="/addingNews"> 手动添加新闻 </a>
+                        </ul>
+                        <a class="list-group-item list-group-item-action" href="/updateLog" style="margin-top: 5%;"> 更新记录 </a>
+                        <a class="list-group-item list-group-item-action" href="/chinaProvincialGraph" style="margin-top: 5%;"> 省会画像 </a>
                 </ul>
                 </div>
             </nav>
@@ -31,13 +39,16 @@
                     <div class="card card-stats card-warning" style="margin: 20px 20px;">
                         <div class="card-body">
                             <h5 class="card-title">
-                                <%= log.version %>
+                                <%= log.title %>
                             <h5>
                             <h6 class="card-category">
                                 <%= log.date %>
                             </h6>
+                            <h6 class="card-category">
+                                <%= log.editor %>
+                            </h6>
                             <h6>
-                                <%= log.description %>
+                                <%= log.content %>
                             </h6>
                         </div>
                     </div>
