@@ -945,7 +945,7 @@ app.post('/newUpdatePost', isLoggedIn, function(req, res){
 })
 
 app.get('/generalNews', isLoggedIn, function(req, res){
-    xinwen.find({}).sort({ _id: -1}).exec(function(err, rst){
+    xinwen.find({}).sort({ "dateAdded": -1}).exec(function(err, rst){
         if(err){
             return err
         } else {
