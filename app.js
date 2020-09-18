@@ -469,7 +469,7 @@ app.get("/database", isLoggedIn, function(req, res){
 
 app.get("/updateLog", isLoggedIn, function(req, res){
     updateLog.find({}).sort({_id: -1}).limit(6).exec(function(err, rst){
-        console.log(rst)
+        // console.log(rst)
         res.render("updateLog", {updateLog: rst})
     })
     
@@ -945,13 +945,30 @@ app.post('/newUpdatePost', isLoggedIn, function(req, res){
 })
 
 app.get('/generalNews', isLoggedIn, function(req, res){
-    xinwen.find({}).sort({ "dateAdded": -1}).exec(function(err, rst){
+    xinwen.find({}).sort({ "dateAdded": -1}).limit(20).exec(function(err, rst){
         if(err){
             return err
         } else {
             res.render('generalNews', {data: rst})
         }
     })
+//     xinwen.aggregate([{
+//         $group: {
+//             _id: { $dateToString: { format: "%Y-%m-%d", date: "$dateAdded" } }
+//         }
+//     }, {
+//         $sort: {
+//             _id: -1
+//         }
+//     }, {$limit: 30}
+// ], function (err, rst){
+//     if (err){
+//         return err
+//     } else{
+//         console.log(rst)
+//         res.render('generalNews', {data: rst})
+//     }
+// }) 
     
 })
 

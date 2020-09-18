@@ -2,7 +2,8 @@ var mongoose = require("mongoose")
 
 var xinwenSchema = new mongoose.Schema({
     title: String,
-    dateAdded: String,
+    dateAdded: Date,
+    timeAdded: String,
     source: String,
     content: String
 })
