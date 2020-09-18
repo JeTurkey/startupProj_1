@@ -304,7 +304,7 @@ app.post("/addingNews/addingNewsPost", isLoggedIn, function(req, res){
     var newsContentModified = ""
     for(var i = 0;i < lines.length;i++){
         //code here using lines[i] which will give you each line
-        newsContentModified += "<p> " + lines[i] + " </p>";
+        newsContentModified += "<p>" + lines[i].replace(/[\r\n]/g,"") + "</p>";
     }
 
     xinwen.create({

@@ -48,7 +48,7 @@
                 <div><%= data[0].source %></div>
 
                 <div id='paragraph'>
-                    
+                    <p></p>
                 </div>
                 
 
@@ -67,7 +67,7 @@
     // document.getElementById('paragraph').innerHTML = "<html>" + s + "</html>"
     // if (s.search("3") != -1) {
     let doc = new DOMParser().parseFromString(s, 'text/html')
-    document.getElementById('paragraph').innerHTML = doc.body.childNodes[0].textContent
+    document.getElementById('paragraph').innerHTML = doc.body.childNodes[0].textContent.replace(/[\r\n]/g,"")
     // } else {
     //     var element = document.getElementById('content')
     //     element.innerHTML = s
