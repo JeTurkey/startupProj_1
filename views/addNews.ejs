@@ -5,7 +5,7 @@
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
             <div class="sidebar-sticky" style="margin-top: 5%;">
                 <ul class="list-group">
-                    <a class="list-group-item list-group-item-action active" href="/usrHome" style="margin-top: 5%;"> 首页 </a>                     
+                    <a class="list-group-item list-group-item-action" href="/usrHome" style="margin-top: 5%;"> 首页 </a>                     
     
                     <a href="#homeSubmenu1" data-target="#homeSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action" style="margin-top: 5%;"> 行业全景图 </a>
                     <ul class="collapse" id="homeSubmenu1">
@@ -27,7 +27,7 @@
 
                     <a href="#homeSubmenu4" data-target="#homeSubmenu4" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle list-group-item list-group-item-action" style="margin-top: 5%;"> 管理员操作 </a>
                     <ul class="collapse" id="homeSubmenu4">
-                        <a class="list-group-item list-group-item-action" href="/addingNews"> 手动添加新闻 </a>
+                        <a class="list-group-item list-group-item-action active" href="/addingNews"> 手动添加新闻 </a>
                     </ul>
                     <a class="list-group-item list-group-item-action" href="/updateLog" style="margin-top: 5%;"> 更新记录 </a>
                     <a class="list-group-item list-group-item-action" href="/chinaProvincialGraph" style="margin-top: 5%;"> 省会画像 </a>
@@ -59,7 +59,7 @@
                     </div> -->
                     <div class="row form-group">
                         <label for="newsInputContent"> 新闻内容 </label>
-                        <textarea class="form-control" aria-label="With textarea" style="height: 400px; overflow: scroll"></textarea>
+                        <textarea name="content" class="form-control" aria-label="With textarea" style="height: 400px; overflow: scroll"></textarea>
                     </div>
                     <div class="row form-group">
                         <label for="newsInputSubmmiter"> 操作人 </label>

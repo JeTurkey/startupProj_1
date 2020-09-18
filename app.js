@@ -300,11 +300,19 @@ app.post("/addingNews/addingNewsPost", isLoggedIn, function(req, res){
     var newsContent = req.body.content;
     var newsSubmitter = req.body.submitter;
 
+    var lines = newsContent.split('\n');
+    var newsContentModified = ""
+    for(var i = 0;i < lines.length;i++){
+        //code here using lines[i] which will give you each line
+        newsContentModified += "<p> " + lines[i] + " </p>";
+    }
+
     xinwen.create({
         title: newsTitle,
         dateAdded: newsDate,
         source: newsSource,
-        content: newsContent
+        content: newsContentModified
+        // content: newsContent
     }, function(err, rst){
         if (err){
             return err
@@ -929,13 +937,15 @@ app.post('/newUpdatePost', isLoggedIn, function(req, res){
             return err
         } else {
             console.log('update saved ')
-            res.redirect('usrHome')
+            
+            res.redirect('updateLog')
+            res.alert("新闻已成功储存")
         }
     })
 })
 
 app.get('/generalNews', isLoggedIn, function(req, res){
-    xinwen.find({}, function(err, rst){
+    xinwen.find({}).sort({ _id: -1}).exec(function(err, rst){
         if(err){
             return err
         } else {
