@@ -41,11 +41,17 @@
 
                 <!-- 主要用于标记数据 -->
                 
-                <div><%= data[0].title %></div>
+                <div>
+                    <h1><%= data[0].title %></h1>
+                </div>
                 
-                <div><%= data[0].dateAdded %></div>
+                <div>
+                    <h3 style="color: grey;"><%= data[0].source %></h3>
+                </div>
 
-                <div><%= data[0].source %></div>
+                <div>
+                    <h4><%= data[0].dateAdded %></h4>
+                </div>
 
                 <div id='paragraph'>
                     <p></p>
@@ -60,14 +66,15 @@
         </div>
 </div>
 <script>
-    var s = "<%= data[0].content %>";
+    var s = "<%= data[0].content.replace(/[\r\n]/g, "") %>";
+    
     // $('#paragraph').last().after('<div><p>是不是傻逼</p></div>')
     // var htmlObject = document.createElement('div');
     // htmlObject.innerHTML = s;
     // document.getElementById('paragraph').innerHTML = "<html>" + s + "</html>"
     // if (s.search("3") != -1) {
     let doc = new DOMParser().parseFromString(s, 'text/html')
-    document.getElementById('paragraph').innerHTML = doc.body.childNodes[0].textContent.replace(/[\r\n]/g,"")
+    document.getElementById('paragraph').innerHTML = doc.body.childNodes[0].textContent
     // } else {
     //     var element = document.getElementById('content')
     //     element.innerHTML = s
