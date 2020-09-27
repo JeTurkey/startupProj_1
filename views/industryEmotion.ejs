@@ -29,30 +29,25 @@
             <div class="col-md-10">
                 <!-- 代码在这 -->
 
-                 分行业情绪指数
+                分行业情绪指数
+
                 
-
-
-
-                <% for(var i = 0; i < (data.length / 3); i++) { %>
-                    <div class="row">
-                    <% for(var j = 0; j < 1; j++){ %>
-                        <div class="col-md-3" style="margin-top: 1%;">
-                            <div class="card card-stats card-warning">
-                                <div class="card-body">
-                                    <div class="col-7 d-flex align-items-center">
-                                        <div class="numbers">
-                                            <a class="card-category" href="industryEmotion/<%= data[i + j]._id %>"> <%= data[i + j]._id %> </a>
-                                            <h4 class="card-title"> <%= data[i + j].score %> </h4>
-                                            <h6>  </h6>
-                                        </div>
-                                    </div>
+                <% data.forEach(function(doc){ %>
+                    <div class="col-md-3" style="margin-top: 1%;">
+                        <div class="card card-stats card-warning">
+                            <div class="card-body">
+                                <div class="numbers">
+                                    
+                                    <h4 class="card-title"> <a href="industryEmotion/<%= doc.tag %>"> <%= doc.tag %> </a> </h4>
                                 </div>
                             </div>
                         </div>
-                    <%}%>
-                </div>
-                <% } %>
+                    </div>
+
+                <% }) %>
+
+
+                
             
                 
         </div>

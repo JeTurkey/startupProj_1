@@ -1,6 +1,3 @@
-
-
-
 var express               = require("express"),
     expressSanitizer      = require("express-sanitizer"),
     bodyParser            = require("body-parser"),
@@ -12,11 +9,15 @@ var express               = require("express"),
     passportLocalMongoose = require("passport-local-mongoose"),
     Promise               = require("bluebird"),
     requestPromise        = require("request-promise"),
-    request               = require("request")
-    governmentcontract    = require("./models/governmentContractDB")
-    updateLog             = require("./models/updateLogDB")
-    blockchaincompany     = require("./models/blockchainCompanyDB")
-    xinwen                = require("./models/xinwenDB")
+    request               = require("request"),
+    governmentcontract    = require("./models/governmentContractDB"),
+    updateLog             = require("./models/updateLogDB"),
+    blockchaincompany     = require("./models/blockchainCompanyDB"),
+    xinwen                = require("./models/xinwenDB"),
+    tag                   = require("./models/tagDB"),
+    score                 = require("./models/scoreBaseDB"),
+    moment                = require("moment");
+
 
 
 
@@ -669,79 +670,41 @@ app.get("/database/:id/edit", isLoggedIn, function(req, res){
 // Get industryEmotion page
 
 app.get("/industryEmotion", isLoggedIn, function(req, res){
-    var test = sentence.aggregate(
-        [
-            { $group: {
-                _id: '$object',
-                score: {$sum: '$score'}
-            }}
-        ], function(err, indexSum){
-        if(err){
+    tag.find({}, function(err, rst){
+        if (err) {
             return err
         } else {
-            console.log('This is indexSum')
-            console.log(indexSum)
-            return indexSum
-
-        }
-    })
-    console.log('This is the test')
-    console.log(test)
-
-    sentence.aggregate(
-        [
-            { $group: {
-                _id: '$object',
-                score: {$sum: '$score'}
-            }}
-        ]).exec(function(err, indexSum){
-        if(err){
-            return err
-        } else {
-            console.log(indexSum)
-            res.render("industryEmotion", {data: indexSum})
+            res.render('industryEmotion', {data: rst})
         }
     })
     
+    
 })
+
 
 // 细分行业关键字页面
 
 app.get("/industryEmotion/:id", isLoggedIn, function(req, res){
-    // 句子数据库中提取对应关键词
 
-    sentence.find({object: req.params.id}, function(err, indSum){
-        if(err){
+    score.find({firmName: req.params.id}, function(err, rst){
+        if (err){
             return err
-        }else{
-            console.log(indSum)
-            var tempList = []
-            var scoreList = []
-            indSum.forEach(function(item){
-                scoreList.push(item.score)
-                if(tempList.indexOf(item.reference) >= 0){
-                    // 表内包含reference
-                } else {
-                    // 表内不包含reference
-                    tempList.push(item.reference)
-                }
-            })
-            console.log(tempList)
-            // 还需要一个industry的一个description的collection
-            
-
-
-            
-
-            news.find({tags: req.params.id}, function(err, documents){
-                tagdescription.find({tag: req.params.id}, function(err, rst){
-                    res.render("specificIndustry", {data: scoreList, docs: documents, title: req.params.id, jieshao: rst})
-                })
-                
-            })
-
+        } else {
+            console.log(rst)
+            res.render('specificIndustry', {data: rst})
         }
     })
+
+    // score.find({firmName: req.params.id}, function(err, rst){
+    //     if (err){
+    //         return err
+    //     } else {
+    //         console.log(req.params.id)
+    //         console.log(rst)
+    //         res.render('specificIndustry', {data: rst})
+    //     }
+    // })
+
     
 })
 
