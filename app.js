@@ -686,12 +686,12 @@ app.get("/industryEmotion", isLoggedIn, function(req, res){
 
 app.get("/industryEmotion/:id", isLoggedIn, function(req, res){
 
-    score.find({firmName: req.params.id}, function(err, rst){
+    score.find({firmName: req.params.id}).sort({ "scoreDate": 1}).exec(function(err, rst){
         if (err){
             return err
         } else {
             console.log(rst)
-            res.render('specificIndustry', {data: rst})
+            res.render('specificIndustry', {data: rst, title: req.params.id})
         }
     })
 
