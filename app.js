@@ -21,6 +21,11 @@ var express               = require("express"),
 
 
 
+    
+
+
+
+
 // MongoDB connection
 
 mongoose.connect("mongodb://localhost/ttd", { useNewUrlParser: true })
@@ -196,13 +201,12 @@ var tagdescription = mongoose.model('tagdescription', tagDescriptionSchema)
 
 // GET Login ---- HomePage
 
-app.get("/", function(req, res){
-    // updateLog.find({}, {'title': 1}).sort({_id: -1}).limit(6).exec(function(err, rst){
-    //     console.log(rst)
-    //     res.render('index', {data: rst})
-    // })
-    res.render('index')
-})
+// app.get("/", function(req, res){
+//     res.render('index')
+// })
+var index = require('./models/indexGet.js')
+app.use('/', index)
+
 
 // POST Login ---- HomePage
 
@@ -340,105 +344,6 @@ app.post("/addingNews/addingNewsPost", isLoggedIn, function(req, res){
 })
 
 
-// // POST news Page
-// app.post("/news/new", isLoggedIn, function(req, res){
-//     var newsTitle = req.body.title;
-//     var newsDate = req.body.date;
-//     var newsSource = req.body.source;
-//     var newsContent = req.body.content;
-//     var newsSubmitter = req.body.submitter;
-//     var newsContentScore = 0;
-
-//     var sbj = ["李克强", "习近平", "国务院", "发改委", "工信部", "信通院", "证监会"]
-//     var senti_pos = ['加强', '推动', '鼓励', '促进', '扶持', '优化', '聚焦', '落实', '建立', '深化', '提高']
-//     var senti_neg = ['控制', '反对', '管控', '调查', '制止', '管理']
-//     var obj = ['基础学科', '互联网', '人工智能', '医疗', '制药', '药品', '安全', '教育', '交通', '短视频', '文化', '创新', '旅游', '基础研究', '区块链']
-
-//     contentSlice = newsContent.split("。")
-//     contentSlice.forEach(function(sentence){
-//         var score = 0
-//         for (var i = 0; i < senti_pos.length; i++){
-//             if(sentence.indexOf(senti_pos[i]) >= 0){
-//                 sentiment = senti_pos[i]
-//                 score = 1
-//                 break
-//             }
-//         }
-//         for (var i = 0; i < senti_neg.length; i++){
-//             if(sentence.indexOf(senti_neg[i]) >= 0){
-//                 sentiment = senti_neg[i]
-//                 score = -1
-//                 break
-//             }
-//         }
-
-//         newsContentScore += score
-//     })
-
-
-//     var newNews = new companyNews({Basic: {Title: newsTitle, Source: newsSource, Date: newsDate, submitter: newsSubmitter, ContentScore: newsContentScore}});
-
-//     contentSlice = newsContent.split("。")
-//     contentSlice.forEach(function(sentence){
-//         var subject = ""
-//         for (var i = 0; i < sbj.length; i++){
-//             if(sentence.indexOf(sbj[i]) >= 0){
-//                 subject = sbj[i]
-//                 break
-//             } else {
-//                 subject = "Unknown"
-//             }
-//         }
-//         var sentiment = ""
-//         var score = 0
-//         for (var i = 0; i < senti_pos.length; i++){
-//             if(sentence.indexOf(senti_pos[i]) >= 0){
-//                 sentiment = senti_pos[i]
-//                 score = 1
-//                 break
-//             }
-//         }
-//         for (var i = 0; i < senti_neg.length; i++){
-//             if(sentence.indexOf(senti_neg[i]) >= 0){
-//                 sentiment = senti_neg[i]
-//                 score = -1
-//                 break
-//             }
-//         }
-//         var object = ""
-//         for (var i = 0; i < obj.length; i++){
-//             if(sentence.indexOf(obj[i]) >= 0){
-//                 object = obj[i]
-//                 break
-//             } else {
-//                 object = "Unknown"
-//             }
-//         }
-
-//         newNews.Content.push({
-//             Sentence: sentence,
-//             Subject: subject,
-//             Object: object,
-//             Score: score
-//         })
-//     })
-
-    
-
-//     news.create(newNews, function(err, news){
-//         if (err) {
-//             console.log("Error")
-//             console.log(err)
-//         } else {
-//             console.log("New news has been added Successfully")
-//             console.log(news)
-//             res.redirect("/news")
-//         }
-//     })
-
-// })
-
-
 
 // GET Database
 app.get("/database", isLoggedIn, function(req, res){
@@ -453,16 +358,6 @@ app.get("/database", isLoggedIn, function(req, res){
             res.render("database", {data: allResults})
         }
     })
-    // var url = "http://omdbapi.com/?s=" + query + "&apikey=thewdb";
-    // request(url, function(error, response, body){
-    // if(!error & response.statusCode == 200) {
-    //     var parsedData = JSON.parse(body)
-    //     res.render("dataBase", {data: parsedData})
-    // }else{
-    //     console.log(error)
-    // }
-    // })
-    // res.render("dataBase")
 })
 
 
@@ -690,7 +585,7 @@ app.get("/industryEmotion/:id", isLoggedIn, function(req, res){
         if (err){
             return err
         } else {
-            console.log(rst)
+            
             res.render('specificIndustry', {data: rst, title: req.params.id})
         }
     })
